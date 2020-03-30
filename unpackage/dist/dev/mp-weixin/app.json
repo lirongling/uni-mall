@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/details/details",
+    "pages/special/special",
+    "pages/category/category",
+    "pages/shoppingCar/shoppingCar",
+    "pages/my/my",
+    "pages/specialDetails/specialDetails",
+    "pages/categoryDetails/categoryDetails",
+    "pages/map/map"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#a8a8a8",
+    "selectedColor": "#BE351C",
+    "backgroundColor": "#FAFAFA",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/images/home.png",
+        "selectedIconPath": "static/images/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/special/special",
+        "iconPath": "static/images/special.png",
+        "selectedIconPath": "static/images/special-active.png",
+        "text": "专题"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "iconPath": "static/images/classify.png",
+        "selectedIconPath": "static/images/classify-active.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/shoppingCar/shoppingCar",
+        "iconPath": "static/images/shoppingCar.png",
+        "selectedIconPath": "static/images/shopping-active.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/images/my.png",
+        "selectedIconPath": "static/images/my-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "usingComponents": {}
+}

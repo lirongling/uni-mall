@@ -1,0 +1,1 @@
+<view class="content data-v-7c97b1c7"><image src="{{topicData.item_pic_url}}" mode="aspectFill" class="data-v-7c97b1c7"></image><view class="name flex a-center data-v-7c97b1c7">{{''+topicData.title+''}}<view class="price data-v-7c97b1c7">{{'￥'+topicData.price_info+'起'}}</view></view><view class="subtitle ellipsis data-v-7c97b1c7">{{''+topicData.subtitle+''}}</view></view>

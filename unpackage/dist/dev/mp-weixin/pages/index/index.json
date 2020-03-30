@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "严选商城",
+  "navigationBarBackgroundColor": "#BE351C",
+  "usingComponents": {
+    "uni-search-bar": "/components/uni-search-bar/uni-search-bar",
+    "wheel": "/components/index/wheel",
+    "channel": "/components/index/channel",
+    "brand": "/components/index/brand",
+    "new-goods": "/components/index/newGoods",
+    "topic": "/components/index/topic",
+    "good": "/components/index/good",
+    "load": "/components/index/load"
+  }
+}

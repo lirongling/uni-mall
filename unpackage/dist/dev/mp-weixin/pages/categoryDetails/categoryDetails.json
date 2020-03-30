@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "严选商城",
+  "navigationBarBackgroundColor": "#BE351C",
+  "usingComponents": {
+    "xyz-tab": "/components/xyz-tab/xyz-tab",
+    "good": "/components/index/good"
+  }
+}
