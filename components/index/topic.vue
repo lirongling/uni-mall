@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" @click="goDetails(topicData.id,topicData.title)">
 		<image :src="topicData.item_pic_url" mode="aspectFill"></image>
 		<view class="name flex a-center">
 			{{topicData.title}}
@@ -29,7 +29,12 @@
 			return {}
 		},
 		methods: {
-
+			// 去专题详情页
+			goDetails(id,title){
+				uni.navigateTo({
+					url:`/pages/specialDetails/specialDetails?id=${id}&title=${title}`
+				})
+			}
 		},
 		mounted() {
 
@@ -63,17 +68,20 @@
 			height: 279rpx;
 			border-radius: 10rpx;
 		}
-		.name{
+
+		.name {
 			font-size: 30rpx;
 			color: #000000;
 			margin: 10rpx auto;
-			.price{
+
+			.price {
 				margin-left: 10rpx;
 				font-size: 28rpx;
-				    color: #BE351C;
+				color: #BE351C;
 			}
 		}
-		.subtitle{
+
+		.subtitle {
 			width: 500rpx;
 		}
 	}

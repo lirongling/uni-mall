@@ -38,7 +38,7 @@
     z-index: 9;
 }
 .container .content-title.data-v-36fd3460 {
-    margin: 20rpx 20rpx;
+    margin: 20rpx 10rpx;
     background-color: white;
     font-size: 30rpx;
     border-radius: 10rpx;
@@ -50,5 +50,11 @@
       font-size: 28rpx;
       color: #808080;
       margin: 10rpx;
+}
+.container .no-content.data-v-36fd3460 {
+    margin-top: 100rpx;
+    font-size: 30rpx;
+    color: #808080;
+    text-align: center;
 }
 

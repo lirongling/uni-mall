@@ -1,7 +1,7 @@
 <template>
 	<view class="containerss">
-		<view class="top flex a-center j-between" @click="goMap">
-			<view class="load">
+		<view class="top flex a-center j-between">
+			<view class="load" @click="goMap">
 				<view class="ellipsis" v-if="addressInfo.address_component">
 					{{addressInfo.address_component.street_number}}
 				</view>
@@ -9,8 +9,8 @@
 					定位中
 				</view>
 			</view>
-			<view class="searchss">
-				<uni-search-bar :radius="100"></uni-search-bar>
+			<view class="searchss" @click="search">
+				<uni-search-bar :initialVal="initialVal" :radius="100"></uni-search-bar>
 			</view>
 		</view>
 		<load></load>
@@ -24,7 +24,7 @@
 				<brand :brandList="homeData.brandList"></brand>
 			</view>
 			<view class="new">
-				<view class="title flex a-center j-center f-column">
+				<view class="title flex a-center j-center f-column" @click="goAllGoods('isNew')">
 					<view>
 						新品首发
 					</view>
@@ -41,7 +41,7 @@
 				</view>
 			</view>
 			<view class="new">
-				<view class="title titles flex a-center j-center f-column">
+				<view class="title titles flex a-center j-center f-column" @click="goAllGoods('isHot')">
 					<view>
 						人气推荐·好物精选
 					</view>
@@ -74,9 +74,7 @@
 					{{item.name}}
 				</view>
 				<view class="content flex a-center f-wrap">
-
 					<good :goodList="item.goodsList"></good>
-
 				</view>
 			</view>
 		</view>
@@ -91,11 +89,13 @@
 	import newGoods from "../../components/index/newGoods.vue"
 	import topic from "../../components/index/topic.vue"
 	import good from "../../components/index/good.vue"
+	import qqmapsdk from "../../static/js/qqmap-wx-jssdk.js"
+	// import load from "../../static/js/load.js"
 	import load from "../../components/index/load.vue"
 	export default {
 		data() {
 			return {
-				homeData: []
+				homeData: [],
 			}
 		},
 		components: {
@@ -109,7 +109,9 @@
 			load
 		},
 		onLoad() {
+			// this.chooseLocation()
 			this.getData()
+
 		},
 		beforeMount() {
 
@@ -140,11 +142,29 @@
 					uni.hideLoading()
 					console.log(err)
 				})
+			},
+			// 跳转到全部商品 新品 人气
+			goAllGoods(type) {
+				uni.navigateTo({
+					url: `/pages/allGoods/allGoods?type=${type}`
+				})
+			},
+			// 跳转到搜索页
+			search() {
+				uni.navigateTo({
+					url: "/pages/search/search"
+				})
 			}
+
 		},
 		computed: {
 			addressInfo() {
 				return this.$store.state.addressInfo
+			},
+			initialVal() {
+				if(this.$store.state.indexaction.defaultKeyword){
+					return this.$store.state.indexaction.defaultKeyword.keyword
+				}
 			}
 		}
 	}

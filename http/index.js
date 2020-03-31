@@ -22,7 +22,7 @@ function _reslog(res) {
 // 创建自定义接口服务实例
 const http = axios.create({
 	// baseURL: [baseURL],
-	timeout: 6000, // 不可超过 manifest.json 中配置 networkTimeout的超时时间
+	timeout: 10000, // 不可超过 manifest.json 中配置 networkTimeout的超时时间
 	// #ifdef H5
 	withCredentials: true,
 	// #endif

@@ -1,31 +1,35 @@
 <template>
 	<view class="container flex f-column">
-		<view class="search">
+		<view class="search" :class="{'active':searchSuggestion.length>0}">
 			<view class="search-content flex a-center j-between">
 				<!-- #ifdef H5 || APP-PLUS -->
-				<view class="back flex a-center j-center" @click="back">
+				<!-- 	<cover-view class="back flex a-center j-center" @click="back">
 					<image src="../../static/images/back.png" mode="widthFix"></image>
-				</view>
+				</cover-view> -->
 				<!-- #endif -->
 				<view class="input">
 					<uni-search-bar @input="input" :radius="100"></uni-search-bar>
 				</view>
 			</view>
 		</view>
-		<view class="content" v-if="isShow">
-			<view class="contents" v-if="searchSuggestion">
-				<view class="content-item border-bottom" v-for="(item,index) in searchSuggestion" :key="index" @click="getLocation(item.location.lat,item.location.lng)">
-					<view class="title">
-						<!-- <u-parse :content="item.title"></u-parse> -->
-						{{item.title}}
-					</view>
-					<view class="address">
-						<!-- <u-parse :content="item.address"></u-parse> -->
-						{{item.address}}
-					</view>
+		<view class="contents" v-if="searchSuggestion.length>0">
+
+			<view class="content-item border-bottom" v-for="(item,index) in searchSuggestion" :key="index" @click="getLocation(item.location.lat,item.location.lng)">
+				<view class="title">
+					<!-- <u-parse :content="item.title"></u-parse> -->
+					{{item.title}}
+				</view>
+				<view class="address">
+					<!-- <u-parse :content="item.address"></u-parse> -->
+					{{item.address}}
 				</view>
 			</view>
-			<map style="width: 100%; height: 100%;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+		</view>
+		<view class="content" v-show="isShow">
+
+			<map :latitude="latitude" :longitude="longitude" :markers="covers">
+
+			</map>
 		</view>
 	</view>
 </template>
@@ -79,21 +83,45 @@
 						if (res.status === 200) {
 							// this.searchSuggestion = res.data.data
 							this.searchSuggestion = res.data.data
-							
+							console.log(res.data.data)
+							// #ifdef APP-PLUS
+							setTimeout(() => {
+								this.isShow = false
+							}, 500)
+							// #endif
+
 						}
 					}).catch(err => {
 						console.log(err)
 					})
 				} else {
+					// #ifdef APP-PLUS
+					this.isShow = true
+					// #endif
 					this.searchSuggestion = []
 				}
 			},
 			// 返回
 			back() {
 				uni.switchTab({
-					url:"../index/index"
+					url: "../index/index"
 				})
 			},
+			// #ifdef H5
+			getLocation(latitude, longitude) {
+				let location = `${latitude},${longitude}`
+				this.$api.getLocation(location).then(res => {
+					if (res.status === 200) {
+						this.$store.state.addressInfo = res.data.result
+						this.back()
+					}
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			// #endif
+
+			// #ifndef H5
 			// 获取位置的具体信息
 			//获取定位信息
 			getLocation(latitude, longitude) { //2. 获取地理位置
@@ -119,29 +147,51 @@
 							duration: 2000,
 							icon: "none"
 						})
-						
+
 					},
 					complete: function(res) {
 						console.log(res);
 					}
 				})
 			},
+			// #endif
 		}
 	}
 </script>
 
 <style scoped lang="scss">
+	/deep/.container .search .input {
+		background: white !important;
+	}
+
+	.controls-title {
+		width: 100%;
+		height: 80rpx;
+		background: white;
+	}
+
 	.container {
 		width: 100%;
+		/* #ifdef APP-PLUS */
 		height: 100vh;
-		// box-sizing: border-box;
-		padding-top: 102rpx;
-		.search {
+		/* #endif */
+		// margin-top: 44px;
+		/* */
+		/* */
+		.active {
 			position: fixed;
-			top: 0;
+			// top: 0;
 			left: 0;
+		}
+
+		.search {
+			/* #ifndef APP-PLUS */
+			position: fixed;
+			// top: 0;
+			left: 0;
+			/* #endif */
 			width: 100%;
-			z-index: 999;
+			z-index: 10;
 			background: white;
 
 			.search-content {
@@ -162,31 +212,46 @@
 			}
 		}
 
+		.contents {
+			position: absolute;
+			left: 0;
+			top: 100rpx;
+			width: 100%;
+			box-sizing: border-box;
+			// border-radius: 10rpx;
+			z-index: 9;
+			padding: 15rpx 20rpx;
+			background: white;
+
+			.content-item {
+				padding: 20rpx;
+				font-size: 30rpx;
+				color: #808080;
+				box-sizing: border-box;
+
+				.title {
+					margin-bottom: 10rpx;
+					color: #000000;
+				}
+			}
+		}
+
 		.content {
 			flex: 1;
 			position: relative;
 
-			.contents {
-				position: absolute;
-				left: 0;
+
+
+			map {
 				width: 100%;
-				box-sizing: border-box;
-				border-radius: 10rpx;
-				z-index: 9;
-				padding: 15rpx 20rpx;
-				background: white;
+				height: calc(100vh - 44px);
+				/* #ifdef APP-PLUS */
+				height: 100%;
+				/* #endif */
+				// #ifdef APP-PLUS
+				// margin-top: 100rpx;
+				// #endif
 
-				.content-item {
-					padding: 20rpx;
-					font-size: 30rpx;
-					color: #808080;
-					box-sizing: border-box;
-
-					.title {
-						margin-bottom: 10rpx;
-						color: #000000;
-					}
-				}
 			}
 		}
 	}

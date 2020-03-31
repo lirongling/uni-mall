@@ -33,7 +33,9 @@
     width: 250rpx;
     border-radius: 20rpx;
 }
-.content .name.data-v-24c427ae, .content .title.data-v-24c427ae, .content .price.data-v-24c427ae {
+.content .name.data-v-24c427ae,
+  .content .title.data-v-24c427ae,
+  .content .price.data-v-24c427ae {
     width: 100%;
 }
 .content .name.data-v-24c427ae {

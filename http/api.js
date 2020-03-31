@@ -159,9 +159,19 @@ export default {
 	mapSuggestion(keyword, region = "北京市", location) {
 		let a = md5(`/ws/place/v1/suggestion?key=${key}&keyword=${keyword}&location=${location}&region=${region}${sig}`)
 		// #ifdef  H5
-		return http.get(`/api/suggestion?key=${key}&keyword=${keyword}&location=${location}&region=${region}&sig=${a}`)
+		return http.get(
+			`/api/ws/place/v1/suggestion?key=${key}&keyword=${keyword}&location=${location}&region=${region}&sig=${a}`)
 		// #endif
+
 		return http.get(`${map}/suggestion?key=${key}&keyword=${keyword}&location=${location}&region=${region}&sig=${a}`)
+	},
+	ipLocation() {
+		let a = md5(`/ws/location/v1/ip?ip=117.173.223.140&key=${key}&output=json${sig}`)
+		return http.get(`/api/ws/location/v1/ip?ip=117.173.223.140&key=${key}&output=json&sig=${a}`)
+	},
+	getLocation(location) {
+		let a = md5(`/ws/geocoder/v1/?key=${key}&location=${location}${sig}`)
+		return http.get(`/api/ws/geocoder/v1/?key=${key}&location=${location}&sig=${a}`)
 	}
 
 }

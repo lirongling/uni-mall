@@ -1,6 +1,6 @@
 <template>
 	<view class="container flex a-center f-wrap">
-		<view class="item flex a-center" v-for="(item,index) in brandList" :key="index">
+		<view class="item flex a-center" v-for="(item,index) in brandList" :key="index" >
 			<image lazy-load="true" style="height: auto;" :src="item.pic_url" mode="widthFix">
 			</image>
 			<view class="item-content">
@@ -32,7 +32,11 @@
 			return {}
 		},
 		methods: {
-
+			// details(id) {
+			// 	uni.navigateTo({
+			// 		url: `/pages/details/details?id=${id}`
+			// 	});
+			// }
 		},
 		mounted() {
 
@@ -68,15 +72,18 @@
 		.img {
 			width: 100%;
 		}
-		.item-content{
+
+		.item-content {
 			position: absolute;
 			left: 35rpx;
-			top:15rpx;
+			top: 15rpx;
 			font-size: 27rpx;
-			.name{
+
+			.name {
 				color: #424242;
 			}
-			.price{
+
+			.price {
 				margin-top: 5rpx;
 				color: #808080;
 			}

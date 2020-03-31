@@ -107,14 +107,29 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
   onLaunch: function onLaunch() {
-    console.log('App Launch');
+    this.getIndexaction();
+
+
+
+
+
   },
   onShow: function onShow() {
-    console.log('App Show');
+    // console.log('App Show')
   },
   onHide: function onHide() {
-    console.log('App Hide');
-  } };exports.default = _default;
+    // console.log('App Hide')
+  },
+  methods: {
+    getIndexaction: function getIndexaction() {var _this = this;
+      this.$api.getIndexaction(this.$store.state.openId).then(function (res) {
+        if (res.status === 200) {
+          _this.$store.state.indexaction = res.data;
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+    } } };exports.default = _default;
 
 /***/ }),
 /* 12 */

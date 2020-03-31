@@ -14,8 +14,10 @@
 			"style": {
 				"navigationBarTitleText": "严选商城",
 				"navigationBarBackgroundColor": "#BE351C",
-				"h5": {
-					"titleNView": false // h5端不显示
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent" //透明渐变导航栏
+					}
 				}
 			}
 		}, {
@@ -58,7 +60,12 @@
 			"path": "pages/specialDetails/specialDetails",
 			"style": {
 				"navigationBarTitleText": "严选商城",
-				"navigationBarBackgroundColor": "#BE351C"
+				"navigationBarBackgroundColor": "#BE351C",
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent" //透明渐变导航栏
+					}
+				}
 			}
 		}, {
 			"path": "pages/categoryDetails/categoryDetails",
@@ -70,7 +77,32 @@
 			"path": "pages/map/map",
 			"style": {
 				"navigationBarTitleText": "严选商城",
-				"navigationBarBackgroundColor": "#BE351C"
+				"navigationBarBackgroundColor": "#BE351C",
+				"app-plus": {
+
+				}
+			}
+		}
+
+		, {
+			"path": "pages/allGoods/allGoods",
+			"style": {
+				"navigationBarTitleText": "严选商城",
+				"navigationBarBackgroundColor": "#BE351C",
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent" //透明渐变导航栏
+					}
+				}
+			}
+		}, {
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "严选商城",
+				"navigationBarBackgroundColor": "#BE351C",
+				"h5": {
+					"titleNView": false // h5端不显示
+				}
 			}
 		}
 	],

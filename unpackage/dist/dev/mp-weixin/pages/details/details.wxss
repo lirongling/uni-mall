@@ -1,0 +1,161 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.container.data-v-80e7aae8 {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #F4F4F4;
+}
+.container .banner.data-v-80e7aae8 {
+    overflow: hidden;
+}
+.container .banner .swiper.data-v-80e7aae8 {
+      width: 100vw;
+      height: 100vw;
+}
+.container .banner .image-item.data-v-80e7aae8 {
+      width: 100%;
+      overflow: hidden;
+      height: 100%;
+}
+.container .banner .img.data-v-80e7aae8 {
+      width: 100%;
+      height: 100%;
+}
+.container .explain .explain-item.data-v-80e7aae8 {
+    height: 80rpx;
+    font-size: 28rpx;
+}
+.container .explain .explain-item.data-v-80e7aae8::before {
+    content: "\B7";
+    color: #BE351C;
+    font-size: 60rpx;
+    margin-right: 5rpx;
+    line-height: 80rpx;
+}
+.container .more .title.data-v-80e7aae8 {
+    width: 400rpx;
+    margin: 20rpx auto;
+    font-size: 30rpx;
+}
+.container .more .title .split.data-v-80e7aae8 {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+              flex: 1;
+      height: 2rpx;
+      background: #ebedf0;
+}
+.container .more .title .text.data-v-80e7aae8 {
+      margin: 0 10rpx;
+}
+.container .nav.data-v-80e7aae8 {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.container .choose.data-v-80e7aae8 {
+    background: white;
+    padding: 20rpx;
+    border-radius: 20rpx 20rpx 0 0;
+}
+.container .choose .top .details .img image.data-v-80e7aae8 {
+      width: 160rpx;
+      border-radius: 10rpx;
+}
+.container .choose .top .details .product.data-v-80e7aae8 {
+      margin-left: 10rpx;
+}
+.container .choose .top .details .product .price.data-v-80e7aae8 {
+        color: #BE351C;
+        font-size: 34rpx;
+        font-weight: 550;
+}
+.container .choose .top .details .product .price .title.data-v-80e7aae8 {
+          font-size: 24rpx;
+}
+.container .choose .top .details .product .name.data-v-80e7aae8 {
+        margin-top: 10rpx;
+        font-size: 29rpx;
+}
+.container .choose .top .details .product .goods_brief.data-v-80e7aae8 {
+        margin-top: 10rpx;
+        font-size: 26rpx;
+        color: #808080;
+}
+.container .choose .top .close image.data-v-80e7aae8 {
+      width: 30rpx;
+      height: 30rpx;
+}
+.container .choose .amount.data-v-80e7aae8 {
+      margin: 20rpx;
+      padding: 20rpx 0;
+      border-top: 1rpx #e2dfdf solid;
+      border-bottom: 1rpx #e2dfdf solid;
+}
+.container .choose .amount .title.data-v-80e7aae8 {
+        font-size: 30rpx;
+        color: #313131;
+}
+.container .choose .amount .title .desc.data-v-80e7aae8 {
+          font-size: 26rpx;
+          color: #808080;
+}
+.container .choose .btn.data-v-80e7aae8 {
+      margin-top: 120rpx;
+}
+.container .choose .btn button.data-v-80e7aae8 {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+                flex: 1;
+        height: 80rpx;
+        font-weight: 500;
+        font-size: 28rpx;
+        line-height: 80rpx;
+        color: white;
+        border-radius: 0;
+}
+.container .choose .btn .btn-left.data-v-80e7aae8 {
+        background: -webkit-linear-gradient(left, #ffd01e, #ff8917);
+        background: linear-gradient(to right, #ffd01e, #ff8917);
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+}
+.container .choose .btn .btn-left.data-v-80e7aae8:active {
+        background: -webkit-linear-gradient(left, #ffc618, #ff8811);
+        background: linear-gradient(to right, #ffc618, #ff8811);
+}
+.container .choose .btn .btn-right.data-v-80e7aae8:active {
+        background: -webkit-linear-gradient(left, #ff512e, #ee0616);
+        background: linear-gradient(to right, #ff512e, #ee0616);
+}
+.container .choose .btn .btn-right.data-v-80e7aae8 {
+        background: -webkit-linear-gradient(left, #ff6034, #ee0a24);
+        background: linear-gradient(to right, #ff6034, #ee0a24);
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+}
+

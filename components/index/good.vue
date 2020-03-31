@@ -1,6 +1,6 @@
 <template>
 	<view class="conainerssss flex a-center f-wrap j-between" v-if="goodList">
-		<view class="contentsss " v-for="(item,index) in goodList" :key="index" @click="details">
+		<view class="contentsss " v-for="(item,index) in goodList" :key="index" @click="details(item.id)">
 			<view class="content-item flex a-center f-column">
 				<image lazy-load="true" style="height: auto;" :src="item.list_pic_url" mode="widthFix"></image>
 				<view class="name ellipsis">
@@ -11,7 +11,12 @@
 				</view>
 			</view>
 		</view>
-		<div class="contentsss" v-for="(items,indexs) in (2-goodList.length%2)" v-if="goodList.length%2 > 0" :key="'for'+indexs"></div>
+		<!-- #ifdef  MP-WEIXIN -->
+		<view class="contentsss" v-for="(items,indexs) in (2-goodList.length%2)" v-if="goodList.length%2 > 0" :key="indexs"></view>
+		<!-- #endif -->
+		<!-- #ifndef  MP-WEIXIN -->
+		<view class="contentsss" v-for="(items,indexs) in (2-goodList.length%2)" v-if="goodList.length%2 > 0" :key="'for'+indexs"></view>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -31,10 +36,9 @@
 			return {}
 		},
 		methods: {
-			details() {
-				console.log('aa')
+			details(id) {
 				uni.navigateTo({
-					url: "/pages/details/details"
+					url: `/pages/details/details?id=${id}`
 				});
 			}
 		},

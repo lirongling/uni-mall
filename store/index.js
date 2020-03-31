@@ -4,8 +4,10 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		userInfo: {},
-		addressInfo:{},
-		categoryId:null
+		addressInfo: {},
+		categoryId: null,
+		openId: null,
+		indexaction:{}
 	},
 	mutations: {},
 	actions: {}

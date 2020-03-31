@@ -55,6 +55,11 @@
 			maxlength: {
 				type: [Number, String],
 				default: 100
+			},
+			
+			initialVal:{
+				type: '',
+				default: ''
 			}
 		},
 		data() {
@@ -69,7 +74,16 @@
 				this.$emit("input", {
 					value: this.searchVal
 				})
+			},
+			initialVal(val){
+				if(val.length>0){
+					this.searchVal=val
+					this.show=true
+				}
 			}
+		},
+		mounted(){
+			this.searchVal=this.initialVal
 		},
 		methods: {
 			searchClick() {

@@ -14,6 +14,9 @@
 		<view class="content" v-if="currentList.length>0">
 			<good :goodList="currentList"></good>
 		</view>
+		<view class="no-content" v-else>
+			暂无数据~~~
+		</view>
 	</view>
 </template>
 
@@ -100,7 +103,7 @@
 		z-index: 9;
 	}
 	.content-title{
-		margin: 20rpx 20rpx;
+		margin: 20rpx 10rpx;
 		background-color: white;
 		font-size: 30rpx;
 		border-radius: 10rpx;
@@ -112,6 +115,12 @@
 			color: #808080;
 			margin: 10rpx;
 		}
+	}
+	.no-content{
+		margin-top: 100rpx;
+		font-size: 30rpx;
+		color: #808080;
+		text-align: center;
 	}
 }
 </style>

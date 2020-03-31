@@ -13,6 +13,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*每个页面公共css */
 
 /*隐藏滚动条*/
@@ -51,6 +67,11 @@
 	-webkit-box-align: center;
 	-webkit-align-items: center;
 	        align-items: center;
+}
+.a-end {
+	-webkit-box-align: end;
+	-webkit-align-items: flex-end;
+	        align-items: flex-end;
 }
 .f-wrap {
 	-webkit-flex-wrap: wrap;

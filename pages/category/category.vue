@@ -1,7 +1,7 @@
 <template>
 	<view class="category">
 		<view class="top">
-			<uniSearchBar></uniSearchBar>
+			<uniSearchBar :initialVal="initialVal" :radius="100"></uniSearchBar>
 		</view>
 		<view class="category-wrapper" v-if="catrgoryList.length>0">
 			<!-- 左边导航 -->
@@ -72,11 +72,14 @@
 				left_scroll: 0, //左侧滑动值
 				last: 0,
 				toView: '', // 配置默认显示view
-				toViews: ''
+				toViews: '',
 			}
 		},
 		components: {
 			uniSearchBar,
+		},
+		onLoad() {
+			
 		},
 		onShow() {
 			this.init();
@@ -84,15 +87,29 @@
 			this.windows_height = uni.getSystemInfoSync().windowHeight;
 
 		},
+		computed: {
+			initialVal() {
+				if(this.$store.state.indexaction.defaultKeyword){
+					return this.$store.state.indexaction.defaultKeyword.keyword
+				}
+			}
+		},
 		methods: {
+			// 去搜索页
+			// 跳转到搜索页
+			search() {
+				uni.navigateTo({
+					url: "/pages/search/search"
+				})
+			},
 			// 动态获取左侧导航栏的id
 			getId(index) {
 				return `nav-${index}`
 			},
 			// 去详情页
-			goDetails(id,title) {
+			goDetails(id, title) {
 				uni.navigateTo({
-					url: `/page/categoryDetails/categoryDetails?id=${id}&title=${title}`
+					url: `/pages/categoryDetails/categoryDetails?id=${id}&title=${title}`
 				})
 			},
 			// 获取大分类
@@ -146,7 +163,7 @@
 				// 	scrollTop: 0,
 				// 	duration: 300
 				// });
-				
+
 
 				// 加入防抖
 				if (this.timeout) {

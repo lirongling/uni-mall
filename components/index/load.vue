@@ -1,9 +1,8 @@
 <template>
 	<view class="test"></view>
 </template>
-
 <script>
-	import qqmapsdk from "../../static/qqmap-wx-jssdk1.2/qqmap-wx-jssdk.js"
+	import qqmapsdk from "../../static/js/qqmap-wx-jssdk.js"
 	export default {
 		name: "",
 		components: {
@@ -16,98 +15,6 @@
 			}
 		},
 		methods: {
-			// getAuthorizeInfo(a = "scope.userLocation") { //1. uniapp弹窗弹出获取授权（地理，个人微信信息等授权信息）弹窗
-			// 	var _this = this;
-			// 	uni.authorize({
-			// 		scope: a,
-			// 		success() { //1.1 允许授权
-			// 			_this.getLocationInfo();
-			// 		},
-			// 		fail() { //1.2 拒绝授权
-			// 			uni.showModal({
-			// 				title: "提示",
-			// 				content: "请重新授权获取你的地理位置，否则部分功能将无法使用",
-			// 				success: (res) => {
-			// 					if (res.confirm) {
-			// 						_this.getLocationInfo();
-			// 					} else {
-			// 						reject("请授权获取你的地理位置，否则部分功能将无法使用！");
-			// 						setTimeout(() => {
-			// 							_this.isGetLocation()
-			// 						}, 3000)
-			// 					}
-			// 				},
-			// 			});
-
-			// 		}
-			// 	})
-			// },
-			// getLocationInfo() { //2. 获取地理位置
-			// 	const QQMapWX = new qqmapsdk({
-			// 		key: 'LJCBZ-HWJ6D-RMK45-H7VYX-WNBO5-KSBHJ',
-			// 		sig: 'X0ESh7L0avInLGjVvq8yk8Q7KeBC9R'
-			// 	});
-			// 	var _this = this;
-			// 	uni.getLocation({
-			// 		type: 'wgs84',
-			// 		success(res) {
-			// 			let latitude, longitude;
-			// 			latitude = res.latitude.toString();
-			// 			longitude = res.longitude.toString();
-			// 			// 解析地址
-			// 			QQMapWX.reverseGeocoder({
-			// 				sig: 'X0ESh7L0avInLGjVvq8yk8Q7KeBC9R',
-			// 				location: {
-			// 					latitude: latitude,
-			// 					longitude: longitude
-			// 				},
-			// 				success: function(res) {
-			// 					_this.$store.state.addressInfo = res.result
-			// 				},
-			// 				fail: function(res) {
-			// 					uni.showToast({
-			// 						title: '定位失败',
-			// 						duration: 2000,
-			// 						icon: "none"
-			// 					})
-			// 					console.log(res);
-			// 				},
-			// 				complete: function(res) {
-			// 					console.log(res);
-			// 				}
-			// 			})
-			// 		}
-			// 	});
-			// },
-			// isGetLocation(a = "scope.userLocation") { // 3. 检查当前是否已经授权访问scope属性，参考下截图
-			// 	var _this = this;
-			// 	uni.getSetting({
-			// 		success(res) {
-			// 			if (!res.authSetting[a]) { //3.1 每次进入程序判断当前是否获得授权，如果没有就去获得授权，如果获得授权，就直接获取当前地理位置
-			// 				_this.getAuthorizeInfo()
-			// 			} else {
-			// 				_this.getLocationInfo()
-			// 			}
-			// 		}
-			// 	});
-			// },
-			// //  获取用户的地理位置，
-
-			// getLocationFn() {
-			// 	console.log('aaas')
-			// 	const _this = this
-			// 	uni.getLocation({
-			// 		type: 'gcj02', // <map> 组件默认为国测局坐标gcj02
-			// 		altitude: true,
-			// 		success(res) {
-			// 			console.log('返回的位置信息', res, _this)
-			// 			_this.globalData.userInfo = {
-			// 				latitude: res.latitude,
-			// 				longitude: res.longitude
-			// 			}
-			// 		}
-			// 	})
-			// },
 			//获取定位信息
 			getLocation(latitude, longitude) { //2. 获取地理位置
 				const QQMapWX = new qqmapsdk({
@@ -141,9 +48,9 @@
 				// 先判断定位权限是否开启
 				let _this = this
 				uni.getLocation({
-					type: 'gcj02', // <map> 组件默认为国测局坐标gcj02
+					type: 'wgs84', // <map> 组件默认为国测局坐标gcj02
 					geocode: true,
-					success(res) {
+					success: (res) => {
 						let latitude, longitude;
 						latitude = res.latitude.toString();
 						longitude = res.longitude.toString();
@@ -153,7 +60,7 @@
 						// 	success // 成功回调
 						// })
 					},
-					fail(e) {
+					fail: (e) => {
 						console.log(e)
 						// 定位权限未开启，引导设置
 						uni.showModal({
@@ -164,15 +71,15 @@
 								if (res.confirm) {
 									//打开授权设置
 									console.log('sure')
-										_this.callbackLocation()
+									_this.callbackLocation()
 								} else if (res.cancel) {
 									uni.showToast({
 										title: "未打开位置授权，某些功能将无法使用",
 										icon: "none"
 									})
-									setTimeout(()=>{
+									setTimeout(() => {
 										// _this.callbackLocation()
-									},3000)
+									}, 3000)
 								}
 							}
 						})
@@ -217,10 +124,49 @@
 					}
 				});
 				// #endif
-			}
+			},
+			getLocations(location){
+				this.$api.getLocation(location).then(res=>{
+					if(res.status===200){
+						this.$store.state.addressInfo = res.data.result
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
+			},
+			// #ifdef  H5
+			// #endif
+
 		},
 		mounted() {
+			// #ifndef H5
 			this.chooseLocation()
+			// #endif
+			// #ifdef  H5
+			let _this=this
+			var s = document.createElement('script');
+			s.src = "https://webapi.amap.com/maps?v=1.4.15&key=e3429d616d5bef5bee89f8eb7b7346ea";
+			var tar = document.querySelector('body');
+			tar.appendChild(s);
+			s.onload = function(e) {
+				AMap.plugin('AMap.CitySearch', function() {
+					var citySearch = new AMap.CitySearch()
+					citySearch.getLocalCity(function(status, result) {
+						if (status === 'complete' && result.info === 'OK') {
+							let location=`${result.bounds.xc.lat},${result.bounds.xc.lng}`
+							_this.getLocations(location)
+							
+						}
+					})
+				})
+			};
+
+			// this.$api.ipLocation().then(res => {
+			// 	console.log(res)
+			// }).catch(err => {
+			// 	console.log(err)
+			// })
+			// #endif
 		},
 		onLoad() {
 			// this.isGetLocation()
