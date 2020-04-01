@@ -104,6 +104,18 @@
 					"titleNView": false // h5端不显示
 				}
 			}
+		}, {
+			"path": "pages/order/order",
+			"style": {
+				"navigationBarTitleText": "严选商城",
+				"navigationBarBackgroundColor": "#BE351C"
+			}
+		}, {
+			"path": "pages/addressEdit/addressEdit",
+			"style": {
+				"navigationBarTitleText": "严选商城",
+				"navigationBarBackgroundColor": "#BE351C"
+			}
 		}
 	],
 	"tabBar": {

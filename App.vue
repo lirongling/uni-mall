@@ -1,7 +1,11 @@
 <script>
 	export default {
 		onLaunch: function() {
-			this.getIndexaction()
+			this.$store.state.openId = uni.getStorageSync("openId")
+			this.$store.state.userInfo = uni.getStorageSync("userInfo")
+			if (this.$store.state.openId) {
+				this.getCartList(this.$store.state.openId)
+			}
 			// #ifdef  H5
 			var script = document.createElement('script');
 			script.src = "https://webapi.amap.com/maps?v=1.4.15&key=e3429d616d5bef5bee89f8eb7b7346ea";
@@ -15,10 +19,13 @@
 			// console.log('App Hide')
 		},
 		methods: {
-			getIndexaction() {
-				this.$api.getIndexaction(this.$store.state.openId).then(res => {
-					if (res.status === 200) {
-						this.$store.state.indexaction = res.data
+			// 查看购物车
+			getCartList(id) {
+				this.$api.getCartList(id).then(res => {
+					if (res.status === 200 && res.data.data.length > 0) {
+						this.$store.state.shoppingNumber = res.data.data.reduce((pre, item) => {
+							return pre + item.number 
+						}, 0)
 					}
 				}).catch(err => {
 					console.log(err)

@@ -4,7 +4,7 @@
 		<view class="name flex a-center">
 			{{topicData.title}}
 			<view class="price">
-				￥{{topicData.price_info}}起
+				阅读：{{topicData.read_count}}
 			</view>
 		</view>
 		<view class="subtitle ellipsis">

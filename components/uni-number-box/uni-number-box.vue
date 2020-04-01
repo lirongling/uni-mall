@@ -32,6 +32,10 @@
 			disabled: {
 				type: Boolean,
 				default: false
+			},
+			index: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {
@@ -45,7 +49,7 @@
 			},
 			inputValue(newVal, oldVal) {
 				if (+newVal !== +oldVal) {
-					this.$emit("change", newVal);
+					this.$emit("change",{val:newVal,index:this.index});
 				}
 			}
 		},
@@ -65,7 +69,7 @@
 					if (value < this.min) {
 						return;
 					}
-					if(value > this.max){
+					if (value > this.max) {
 						value = this.max
 					}
 				} else if (type === "plus") {
@@ -73,7 +77,7 @@
 					if (value > this.max) {
 						return;
 					}
-					if(value < this.min){
+					if (value < this.min) {
 						value = this.min
 					}
 				}
@@ -106,12 +110,12 @@
 	};
 </script>
 <style lang="scss" scoped>
-	$box-height: 60rpx;
+	$box-height: 50rpx;
 	/* #ifdef APP-NVUE */
-	$box-line-height: 60rpx;
+	$box-line-height: 50rpx;
 	/* #endif */
-	$box-line-height: 48rpx;
-	$box-width: 60rpx;
+	$box-line-height: 36rpx;
+	$box-width: 50rpx;
 
 	.uni-numbox {
 		/* #ifndef APP-NVUE */
@@ -125,7 +129,7 @@
 
 	.uni-numbox__value {
 		background-color: $uni-bg-color;
-		width: 80rpx;
+		width: 70rpx;
 		height: $box-height;
 		text-align: center;
 		font-size: $uni-font-size-lg;

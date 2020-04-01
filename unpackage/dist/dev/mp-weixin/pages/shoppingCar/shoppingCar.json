@@ -1,5 +1,8 @@
 {
   "navigationBarTitleText": "严选商城",
   "navigationBarBackgroundColor": "#BE351C",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-number-box": "/components/uni-number-box/uni-number-box",
+    "no-login": "/components/shoppingCar/noLogin"
+  }
 }

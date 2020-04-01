@@ -10,7 +10,9 @@
     "pages/categoryDetails/categoryDetails",
     "pages/map/map",
     "pages/allGoods/allGoods",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/order/order",
+    "pages/addressEdit/addressEdit"
   ],
   "subPackages": [],
   "window": {
@@ -63,5 +65,5 @@
     }
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap37.json"
+  "sitemapLocation": "sitemap81.json"
 }

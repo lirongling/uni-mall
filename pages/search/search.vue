@@ -83,7 +83,7 @@
 			}
 		},
 		methods: {
-			// 搜索框收入
+			// 搜索框输入
 			input(e) {
 				this.num++
 				if (this.keyword === e.value && this.num === 1) {
@@ -104,6 +104,7 @@
 								})
 							} else {
 								this.searchResult = res.data.keywords
+								this.addHistory(val)
 							}
 						}
 					}).catch(err => {
@@ -116,6 +117,9 @@
 			// 添加搜索
 			addSearch(e) {
 				this.initialVal = e
+				setTimeout(()=>{
+					this.initialVal=""
+				},1000)
 			},
 			// 跳转到详情页
 			details(id) {
@@ -125,17 +129,43 @@
 			},
 			// 删除搜索历史
 			delHistory() {
+				let _this=this
 				uni.showModal({
 					title: '提醒',
 					content: '是否确认删除搜索历史？',
 					success: function(res) {
 						if (res.confirm) {
-							console.log('用户点击确定');
+							_this.historyData=[]
+							_this.$api.clearHistory({openId:_this.$store.state.openId}).then(res=>{
+								if(res.data.data==="清除成功"){
+									uni.showToast({
+										title:"删除成功"
+									})
+								}
+							}).catch(err=>{
+								console.log(err)
+							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
+							
 						}
 					}
 				});
+			},
+			// 添加搜索历史
+			addHistory(e){
+				let flage=this.historyData.findIndex(item=>item.keyword===e)
+				if(flage==-1){
+					this.historyData.unshift({
+						keyword:e
+					})
+					let a={keyword:e,openId:this.$store.state.openId}
+					this.$api.addHistory(a).then(res=>{
+						console.log(res)
+					}).catch(err=>{
+						console.log(err)
+					})
+				}
+				
 			},
 			// 返回
 			back() {
@@ -149,18 +179,27 @@
 					url: "/pages/index/index"
 				})
 				// #endif
+			},
+			getIndexaction() {
+				this.$api.getIndexaction(this.$store.state.openId).then(res => {
+					if (res.status === 200) {
+						this.$store.state.indexaction = res.data
+						this.initialVal = res.data.defaultKeyword.keyword
+						this.hotKeywordList = res.data.hotKeywordList
+						this.historyData = res.data.historyData
+					
+					}
+				}).catch(err => {
+					console.log(err)
+				})
 			}
 		},
 		mounted() {
 
 		},
 		onLoad() {
-			let a=this.$store.state.indexaction
-			if(a.defaultKeyword){
-				this.initialVal = a.defaultKeyword.keyword
-				this.hotKeywordList = a.hotKeywordList
-				this.historyData = a.historyData
-			}	
+			let a = this.$store.state.indexaction
+			this.getIndexaction()
 		},
 		filters: {
 
@@ -169,11 +208,6 @@
 
 		},
 		watch: {
-			// "$store.state.indexaction"(val) {
-			// 	this.initialVal = val.defaultKeyword.keyword
-			// 	this.hotKeywordList = val.hotKeywordList
-			// 	this.historyData = val.historyData
-			// }
 		},
 		directives: {}
 	}

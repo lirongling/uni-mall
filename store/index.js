@@ -7,7 +7,10 @@ const store = new Vuex.Store({
 		addressInfo: {},
 		categoryId: null,
 		openId: null,
-		indexaction:{}
+		indexaction: {},
+		shoppingNumber: 0,
+		orderList:[],
+		addressList:[]
 	},
 	mutations: {},
 	actions: {}

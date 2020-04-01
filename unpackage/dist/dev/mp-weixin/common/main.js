@@ -104,10 +104,14 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
   onLaunch: function onLaunch() {
-    this.getIndexaction();
+    this.$store.state.openId = uni.getStorageSync("openId");
+    this.$store.state.userInfo = uni.getStorageSync("userInfo");
+    if (this.$store.state.openId) {
+      this.getCartList(this.$store.state.openId);
+    }
 
 
 
@@ -121,15 +125,19 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     // console.log('App Hide')
   },
   methods: {
-    getIndexaction: function getIndexaction() {var _this = this;
-      this.$api.getIndexaction(this.$store.state.openId).then(function (res) {
-        if (res.status === 200) {
-          _this.$store.state.indexaction = res.data;
+    // 查看购物车
+    getCartList: function getCartList(id) {var _this = this;
+      this.$api.getCartList(id).then(function (res) {
+        if (res.status === 200 && res.data.data.length > 0) {
+          _this.$store.state.shoppingNumber = res.data.data.reduce(function (pre, item) {
+            return pre + item.number;
+          }, 0);
         }
       }).catch(function (err) {
         console.log(err);
       });
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 12 */

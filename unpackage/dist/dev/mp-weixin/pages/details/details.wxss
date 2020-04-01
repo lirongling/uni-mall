@@ -141,8 +141,8 @@
 .container .choose .btn .btn-left.data-v-80e7aae8 {
         background: -webkit-linear-gradient(left, #ffd01e, #ff8917);
         background: linear-gradient(to right, #ffd01e, #ff8917);
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
+        border-top-left-radius: 40rpx;
+        border-bottom-left-radius: 40rpx;
 }
 .container .choose .btn .btn-left.data-v-80e7aae8:active {
         background: -webkit-linear-gradient(left, #ffc618, #ff8811);

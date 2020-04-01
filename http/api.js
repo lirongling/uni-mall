@@ -37,9 +37,9 @@ export default {
 	},
 	// 参数:openId: 生成的openId
 	//   - 包括默认关键字 搜索记录 热门搜索
-	// 添加搜索历史
-	addHistory(openId) {
-		return http.post(`${url}/search/addhistoryaction`, openId)
+	// 添加搜索历史  参数: keyword:关键字 openId:生成的openId
+	addHistory({keyword,openId}) {
+		return http.post(`${url}/search/addhistoryaction`, {keyword,openId})
 	},
 	// 清空搜索记录
 	clearHistory(openId) {

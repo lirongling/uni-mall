@@ -70,12 +70,13 @@
 						</view>
 					</view>
 					<view>
-						<uni-number-box :min="1" :max="3" @change="bindChange"></uni-number-box>
+	
+						<uni-number-box :value="number" :min="1" :max="3" @change="bindChange"></uni-number-box>
 					</view>
 				</view>
 				<view class="btn flex">
-					<button class="btn-left">加入购物车</button>
-					<button class="btn-right">立即购买</button>
+					<button class="btn-left" @click="buy(0)">加入购物车</button>
+					<button class="btn-right" @click="buy(1)">立即购买</button>
 				</view>
 			</view>
 		</uni-popup>
@@ -117,7 +118,7 @@
 				}, {
 					icon: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/uni-ui/goodsnav/carts.png',
 					text: '购物车',
-					info: 2
+					info: null
 				}],
 				buttonGroup: [{
 						text: '加入购物车',
@@ -139,37 +140,124 @@
 				this.$api.goodDetails(id, openId).then(res => {
 					if (res.status === 200) {
 						this.goodDetail = res.data
+						if (res.data.collected) {
+							this.options[0].icon = "../../static/images/collect-action.png"
+						}
+
 					}
 				}).catch(err => {
 					console.log(err)
 				})
 			},
-			onClick(e) {
-				uni.showToast({
-					title: `点击${e.content.text}`,
-					icon: 'none'
+			// 登录提醒
+			login() {
+				uni.showModal({
+					title: '暂未登录',
+					content: '是否立即去登录？',
+					success: function(res) {
+						if (res.confirm) {
+							uni.switchTab({
+								url: "/pages/my/my"
+							})
+						} else if (res.cancel) {}
+					}
 				})
+			},
+			// 点击商品导航图标
+			onClick(e) {
+				if (!this.$store.state.openId) {
+					this.login()
+				} else {
+					let a = {
+						goodsId: this.goodDetail.info.id,
+						openId: this.$store.state.openId
+					}
+					if (e.index === 0) {
+						this.$api.addcollect(a).then(res => {
+							if (res.status === 200) {
+								if (this.goodDetail.collected) {
+									this.options[0].icon = "../../static/images/collect.png"
+									uni.showToast({
+										title: "取消收藏成功"
+									})
+								} else {
+									this.options[0].icon = "../../static/images/collect-action.png"
+									uni.showToast({
+										title: "收藏成功"
+									})
+								}
+								this.goodDetail.collected = !this.goodDetail.collected
+							}
+						}).catch(err => {
+							console.log(err)
+						})
+					} else if (e.index === 2) {
+						uni.switchTab({
+							url: "/pages/shoppingCar/shoppingCar"
+						})
+					}
+				}
 
 			},
 			// 点击商品导航按钮
 			buttonClick(e) {
 				if (e.index === 1) {
 					this.$refs.popup.open()
+				} else {
+					if (!this.$store.state.openId) {
+						this.login()
+					} else {
+						this.addCart(1)
+					}
 				}
-				console.log(e)
-				this.options[2].info++
+			},
+			// 加入购物车
+			addCart(number) {
+				let a = {
+					number: 1,
+					goodsId: this.goodDetail.info.id,
+					openId: this.$store.state.openId
+				}
+				a.number = Number(number)
+				this.$api.addCart(a).then(res => {
+					if (res.status === 200 && res.data.data === "success") {
+						this.$store.state.shoppingNumber += Number(number)
+						this.options[2].info = this.$store.state.shoppingNumber
+						uni.showToast({
+							title: "加入成功"
+						})
+					}
+				}).catch(err => {
+					console.log(err)
+				})
 			},
 			// 改变商品数量
 			bindChange(e) {
-				this.number = e
+				this.number = Number(e.val)
 			},
 			// 关闭pop弹框
 			close() {
 				this.$refs.popup.close()
+			},
+			// 加入购物车或立即购买
+			buy(num) {
+				this.close()
+				if (!this.$store.state.openId) {
+					this.login()
+				} else {
+                    if(num===0){
+						this.addCart(this.number)
+					}else{
+						
+					} 
+				}
 			}
 		},
 		onLoad(option) {
-			this.goodDetails(option.id)
+			this.goodDetails(option.id, this.$store.state.openId)
+			if(this.$store.state.shoppingNumber){
+				this.options[2].info = this.$store.state.shoppingNumber
+			}
 		}
 
 		,
@@ -334,13 +422,15 @@
 
 				.btn-left {
 					background: linear-gradient(to right, #ffd01e, #ff8917);
-					border-top-left-radius: 20px;
-					border-bottom-left-radius: 20px;
+					border-top-left-radius: 40rpx;
+					border-bottom-left-radius: 40rpx;
 				}
-				.btn-left:active{
+
+				.btn-left:active {
 					background: linear-gradient(to right, #ffc618, #ff8811);
 				}
-				.btn-right:active{
+
+				.btn-right:active {
 					background: linear-gradient(to right, #ff512e, #ee0616);
 				}
 
