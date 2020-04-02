@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "历史浏览",
+  "navigationBarBackgroundColor": "#BE351C",
+  "usingComponents": {
+    "collect-item": "/components/collect/collectItem"
+  }
+}

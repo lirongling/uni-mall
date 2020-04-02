@@ -165,9 +165,9 @@ export default {
 
 		return http.get(`${map}/suggestion?key=${key}&keyword=${keyword}&location=${location}&region=${region}&sig=${a}`)
 	},
-	ipLocation() {
-		let a = md5(`/ws/location/v1/ip?ip=117.173.223.140&key=${key}&output=json${sig}`)
-		return http.get(`/api/ws/location/v1/ip?ip=117.173.223.140&key=${key}&output=json&sig=${a}`)
+	ipLocation(ip) {
+		let a = md5(`/ws/location/v1/ip?ip=${ip}&key=${key}&output=json${sig}`)
+		return http.get(`/api/ws/location/v1/ip?ip=${ip}&key=${key}&output=json&sig=${a}`)
 	},
 	getLocation(location) {
 		let a = md5(`/ws/geocoder/v1/?key=${key}&location=${location}${sig}`)

@@ -1,12 +1,11 @@
 <template>
 	<view class="container">
-		<view class="top" @click="jump">
+		<view class="top" @click="login">
 			<view class="user flex a-center j-between">
 				<view class="left flex a-center ">
-					<image v-if="userInfos.avatarUrl" lazy-load="true" style="height: auto;" :src="userInfos.avatarUrl"
-					 mode="widthFix"></image>
+					<image v-if="userInfos" lazy-load="true" style="height: auto;" :src="userInfos.avatarUrl" mode="widthFix"></image>
 					<image v-else lazy-load="true" style="height: auto;" src="https://i.loli.net/2017/08/21/599a521472424.jpg" mode="widthFix"></image>
-					<view class="name" v-if="userInfos.nickName">
+					<view class="name" v-if="userInfos">
 						{{userInfos.nickName}}
 					</view>
 					<view class="name" v-else>
@@ -19,7 +18,7 @@
 			</view>
 		</view>
 		<view class="content flex a-center f-wrap ">
-			<view class="content-item flex a-center f-column j-center" v-for="(item,index) in navList" :key="index">
+			<view class="content-item flex a-center f-column j-center" v-for="(item,index) in navList" :key="index" @click="jump(index)">
 				<image :src="item.icon" mode="widthFix"></image>
 				<view class="name">
 					{{item.name}}
@@ -109,6 +108,10 @@
 						icon: "../../static/images/retroaction.png",
 						name: "意见反馈"
 					},
+					{
+						icon: "../../static/images/excit.png",
+						name: "退出登录"
+					},
 				],
 				userInfo: {
 					avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/9MicRvz1HV174YibIpRBqZuDqD7EAHibcc1sLnwBjGr9Xs3TnRjKxgUbZicc4TdtDdyhjem5fJsn7hfaCnibKeFdlAA/132",
@@ -125,13 +128,13 @@
 		components: {
 			uniPopup
 		},
-		computed:{
-			userInfos(){
+		computed: {
+			userInfos() {
 				return this.$store.state.userInfo
 			}
 		},
 		methods: {
-			jump() {
+			login() {
 				if (this.$store.state.openId) {
 
 				} else {
@@ -212,6 +215,43 @@
 
 			},
 			//#endif
+			// 跳转
+			jump(index) {
+				if (index === 3) {
+					uni.navigateTo({
+						url: "/pages/collect/collect"
+					})
+				} else if (index === 4) {
+					uni.navigateTo({
+						url: "/pages/lookHistory/lookHistory"
+					})
+				} else if (index === 6) {
+					uni.navigateTo({
+						url: "/pages/addressList/addressList"
+					})
+				} else if (index === 10) {
+					uni.navigateTo({
+						url: "/pages/service/service"
+					})
+				}else if(index === 11){
+					if(this.$store.state.userInfo){
+						this.$store.state.userInfo = null
+						this.$store.state.openId = null
+						uni.removeStorageSync("openId")
+						uni.removeStorageSync("userInfo")
+						uni.showToast({
+							title:"退出成功",
+							icon:"none"
+						})
+					}else{
+						uni.showToast({
+							title:"暂未登录，请登录",
+							icon:"none"
+						})
+					}
+					
+				}
+			}
 		},
 
 	}

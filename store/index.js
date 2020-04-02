@@ -9,8 +9,9 @@ const store = new Vuex.Store({
 		openId: null,
 		indexaction: {},
 		shoppingNumber: 0,
-		orderList:[],
-		addressList:[]
+		orderList: [],
+		addressList: [],
+		address: {},
 	},
 	mutations: {},
 	actions: {}

@@ -43,12 +43,12 @@
 					设为默认地址
 				</view>
 				<view class="">
-					<switch :checked="address.checked" @change="switchChange" />
+					<switch :checked="address.checked===1" @change="switchChange" />
 				</view>
 			</view>
 			<view class="btn">
-				<button class="btn-danger" @click="verifyFrom">添加</button>
-				<button class="btn-default">删除</button>
+				<button class="btn-danger" @click="verifyFrom">{{btnText}}</button>
+				<button class="btn-default" v-if="flage" @click="delAddress">删除</button>
 			</view>
 		</view>
 		<simple-address ref="simpleAddress" :pickerValueDefault="cityPickerValueDefault" @onConfirm="onConfirm" themeColor="#007AFF"></simple-address>
@@ -76,12 +76,15 @@
 					userName: "",
 					openId: null
 				},
-				defaultAddress:[]
+				defaultAddress: [],
+				btnText: "添加",
+				flage: false,
 			}
 		},
 		methods: {
 			// 切换是否是默认
 			switchChange(e) {
+				// if
 				this.address.checked = e.detail.value
 			},
 			openAddres() {
@@ -141,7 +144,7 @@
 						this.toast("请输入手机号")
 					} else if (!this.address.telNumber.match(a)) {
 						this.toast("手机号不合法")
-					}else{
+					} else {
 						this.saveAddress()
 					}
 				}
@@ -149,10 +152,10 @@
 			// 新增or修改地址
 			saveAddress() {
 				this.$api.saveAddress(this.address).then(res => {
-					if(res.status===200&&res.data.data){
+					if (res.status === 200 && res.data.data) {
 						this.toast('添加成功')
 						uni.navigateBack({
-						    delta: 1
+							delta: 1
 						});
 					}
 				}).catch(err => {
@@ -166,17 +169,51 @@
 					icon: "none"
 				})
 			},
+			// 删除地址
+			delAddress() {
+				let _this=this
+				uni.showModal({
+					title: '提醒',
+					content: "是否删除该地址？",
+					success: function(res) {
+						if (res.confirm) {
+							_this.toast("此功能暂不可用")
+						} else if (res.cancel) {
+
+						}
+					}
+				});
+			},
 		},
 		mounted() {
 
 		},
 		onShow() {
-			if (this.$store.state.addressInfo.address_component) {
-				let address = this.$store.state.addressInfo.address_component
-				this.defaultAddress=[address.province, address.city, address.district]
-			}
+			// console.log(option)
+			// let address=
+
 		},
-		onLoad() {
+		onLoad(option) {
+			if (option.address) {
+				this.btnText = "修改"
+				this.flage = true
+				let addressInfo = JSON.parse(option.address)
+				let address = addressInfo.address.split(' ')
+				this.defaultAddress = address
+				this.address.address = addressInfo.address
+				this.address.addressId = addressInfo.id
+				if (addressInfo.is_default) {
+					this.address.checked = true
+				} else {
+					this.address.checked = false
+				}
+				this.address.detailadress = addressInfo.address_detail
+				this.address.telNumber = addressInfo.mobile
+				this.address.userName = addressInfo.name
+			} else if (this.$store.state.addressInfo.address_component) {
+				let address = this.$store.state.addressInfo.address_component
+				this.defaultAddress = [address.province, address.city, address.district]
+			}
 			this.address.openId = this.$store.state.openId
 		},
 		filters: {

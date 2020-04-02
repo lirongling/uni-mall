@@ -70,7 +70,7 @@
 						</view>
 					</view>
 					<view>
-	
+
 						<uni-number-box :value="number" :min="1" :max="3" @change="bindChange"></uni-number-box>
 					</view>
 				</view>
@@ -143,6 +143,7 @@
 						if (res.data.collected) {
 							this.options[0].icon = "../../static/images/collect-action.png"
 						}
+						this.history()
 
 					}
 				}).catch(err => {
@@ -245,17 +246,66 @@
 				if (!this.$store.state.openId) {
 					this.login()
 				} else {
-                    if(num===0){
+					if (num === 0) {
 						this.addCart(this.number)
-					}else{
-						
-					} 
+					} else {
+						let a = {
+							user_id: this.$store.state.openId,
+							goods_id: this.goodDetail.info.id,
+							goods_name: this.goodDetail.info.name,
+							retail_price: this.goodDetail.info.retail_price,
+							list_pic_url: this.goodDetail.info.list_pic_url,
+							number: this.number
+						}
+						this.$store.state.orderList = [a]
+						uni.navigateTo({
+							url: "/pages/order/order"
+						})
+
+					}
+				}
+			},
+			// 存历史浏览
+			history() {
+				if (this.$store.state.openId) {
+					let goodItem = {
+						id: this.goodDetail.info.id,
+						name: this.goodDetail.info.name,
+						list_pic_url: this.goodDetail.info.list_pic_url,
+						retail_price: this.goodDetail.info.retail_price,
+						goods_brief: this.goodDetail.info.goods_brief,
+						add_time: new Date(),
+					}
+					let historyShops = []
+					let storage = uni.getStorageSync("historyShops")
+					console.log(storage)
+					if (storage) {
+						historyShops = storage
+						let userIndex = historyShops.findIndex(item=>item.userId === this.$store.state.openId)
+						if (userIndex !== -1) {
+							let index = historyShops[userIndex].goods.findIndex(item => item.id === this.goodDetail.info.id)
+							if (index === -1) {
+								historyShops[userIndex].goods.unshift(goodItem);
+							}
+						} else {
+							historyShops.unshift({
+								userId: this.$store.state.openId,
+								goods: [goodItem]
+							})
+						}
+					} else {
+						historyShops.unshift({
+							userId: this.$store.state.openId,
+							goods: [goodItem]
+						})
+					}
+					uni.setStorageSync("historyShops",historyShops)
 				}
 			}
 		},
 		onLoad(option) {
 			this.goodDetails(option.id, this.$store.state.openId)
-			if(this.$store.state.shoppingNumber){
+			if (this.$store.state.shoppingNumber) {
 				this.options[2].info = this.$store.state.shoppingNumber
 			}
 		}

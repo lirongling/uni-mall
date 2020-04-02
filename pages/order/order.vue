@@ -1,11 +1,29 @@
 <template>
 	<view class="container">
-		<view class="address flex a-center j-center" @click="addressEdit">
+		<view class="tops">
+			<!-- <image src="../../static/images/caitiao.jpg" mode="widthFix"></image> -->
+		</view>
+		<view class="address flex a-center j-center" @click="addressEdit" v-if="addressList.length===0">
 			<image src="../../static/images/add.png" mode="widthFix"></image>
 			点击新增地址
 		</view>
-		<view class="tops">
-			<!-- <image src="../../static/images/caitiao.jpg" mode="widthFix"></image> -->
+		<view class="addresss flex a-center j-between" v-else @click="goAddress">
+			<view class="addresss-left">
+				<view class="user flex a-center">
+					<view class="name">
+						{{address.name}}
+					</view>
+					<view class="phone">
+						{{address.mobile}}
+					</view>
+				</view>
+				<view class="address-details">
+					{{address.address}}{{address.address_detail}}
+				</view>
+			</view>
+			<view class="addresss-right">
+				<image src="../../static/images/right.png" mode="widthFix"></image>
+			</view>
 		</view>
 		<view class="content">
 			<view class="content-item flex a-center j-between">
@@ -78,6 +96,8 @@
 		props: {},
 		data() {
 			return {
+				address: {},
+				addressList: [],
 
 			}
 		},
@@ -88,14 +108,55 @@
 					url: "/pages/addressEdit/addressEdit"
 				})
 			},
+			// 跳转到地址列表
+			goAddress() {
+				let id = this.address.id
+				uni.navigateTo({
+					url: `/pages/addressList/addressList?id=${id}`
+				})
+			},
 			// 获取全部地址
 			getAddressList(id) {
 				this.$api.getAddressList(id).then(res => {
 					if (res.status === 200) {
-						this.$store.state.addressList = res.data
+						this.$store.state.addressList = res.data.data
+						this.addressList = res.data.data
+						this.address = res.data.data[0]
+						if(this.address){
+							this.address.address = this.address.address.replace(/\s*/g, "")
+						}
 					}
 				}).catch(err => {
 					console.log(err)
+				})
+			},
+			goOrder() {
+				let oderList = this.$store.state.orderList
+				oderList.map(item => {
+					let allPrise = item.number * item.retail_price
+					let a = {
+						allPrise,
+						openId: item.user_id,
+						goodsId: item.goods_id
+					}
+					this.$api.submitOrder(a).then(res => {
+						if (res.status === 200 && res.data.data) {
+							uni.showToast({
+								title: "购买成功,共计元",
+								icon:"none"
+							})
+							this.$api.deleteAction(item.id).then(res => {
+								if (res.status === 200 && res.data.data) {
+									console.log(res)
+								}
+							}).catch(err => {
+								console.log(err)
+							})
+
+						}
+					}).catch(err => {
+						console.log(err)
+					})
 				})
 			}
 		},
@@ -106,7 +167,14 @@
 
 		},
 		onShow() {
-			this.getAddressList(this.$store.state.openId)
+			console.log(this.$store.state.orderList)
+			if (this.$store.state.address.name) {
+				this.address = this.$store.state.address
+				this.address.address = this.address.address.replace(/\s*/g, "")
+			} else {
+				this.getAddressList(this.$store.state.openId)
+			}
+
 		},
 		filters: {
 
@@ -116,7 +184,7 @@
 				return this.$store.state.orderList
 			},
 			number() {
-				let a = this.$store.state.orderList.filter(item => item.isChecked).reduce((pre, item) => {
+				let a = this.$store.state.orderList.reduce((pre, item) => {
 					return pre + item.number
 				}, 0)
 				return a
@@ -161,6 +229,37 @@
 				width: 40rpx;
 				margin-right: 10rpx;
 				height: 40rpx;
+			}
+		}
+
+		.addresss {
+			font-size: 30rpx;
+			padding: 20rpx 30rpx;
+			background: white;
+
+			.addresss-left {
+				flex: 1;
+
+				.user {
+					margin-bottom: 10rpx;
+					font-size: 32rpx;
+
+					.name {
+						font-size: 34rpx;
+						margin-right: 10rpx;
+					}
+				}
+
+				.address-detail {}
+			}
+
+			.addresss-right {
+				margin-left: 30rpx;
+
+				image {
+					width: 50rpx;
+					height: 50rpx;
+				}
 			}
 		}
 

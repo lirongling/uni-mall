@@ -119,5 +119,6 @@
 }
 .container .content .content-item .right image.data-v-7e0d51c0 {
         width: 50rpx;
+        height: 50rpx;
 }
 

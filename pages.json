@@ -116,8 +116,33 @@
 				"navigationBarTitleText": "严选商城",
 				"navigationBarBackgroundColor": "#BE351C"
 			}
+		}, {
+			"path": "pages/addressList/addressList",
+			"style": {
+				"navigationBarTitleText": "严选商城",
+				"navigationBarBackgroundColor": "#BE351C"
+			}
+		}, {
+			"path": "pages/collect/collect",
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"navigationBarBackgroundColor": "#BE351C"
+			}
+		}, {
+			"path": "pages/lookHistory/lookHistory",
+			"style": {
+				"navigationBarTitleText": "历史浏览",
+				"navigationBarBackgroundColor": "#BE351C"
+			}
 		}
-	],
+	    ,{
+            "path" : "pages/service/service",
+           "style": {
+           	"navigationBarTitleText": "意见反馈",
+           	"navigationBarBackgroundColor": "#BE351C"
+           }
+        }
+    ],
 	"tabBar": {
 		"color": "#a8a8a8",
 		"selectedColor": "#BE351C",

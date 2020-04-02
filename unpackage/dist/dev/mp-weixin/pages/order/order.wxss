@@ -43,6 +43,31 @@
       margin-right: 10rpx;
       height: 40rpx;
 }
+.container .addresss.data-v-1ab2b7e4 {
+    font-size: 30rpx;
+    padding: 20rpx 30rpx;
+    background: white;
+}
+.container .addresss .addresss-left.data-v-1ab2b7e4 {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+              flex: 1;
+}
+.container .addresss .addresss-left .user.data-v-1ab2b7e4 {
+        margin-bottom: 10rpx;
+        font-size: 32rpx;
+}
+.container .addresss .addresss-left .user .name.data-v-1ab2b7e4 {
+          font-size: 34rpx;
+          margin-right: 10rpx;
+}
+.container .addresss .addresss-right.data-v-1ab2b7e4 {
+      margin-left: 30rpx;
+}
+.container .addresss .addresss-right image.data-v-1ab2b7e4 {
+        width: 50rpx;
+        height: 50rpx;
+}
 .container .content.data-v-1ab2b7e4 {
     margin: 20rpx auto;
     background: white;

@@ -39,6 +39,7 @@ http.interceptors.request.use(config => {
 	// const cookie = uni.getStorageSync('cookie')
 	// 设置Cookie
 	// config.headers.Cookie = cookie
+	uni.showLoading()
 	_reqlog(config)
 	return config
 })
@@ -46,6 +47,7 @@ http.interceptors.request.use(config => {
 // 拦截器 在请求之后拦截
 http.interceptors.response.use(response => {
 	_reslog(response)
+	uni.hideLoading()
 	// code...
 	// 获取cookie
 	// let headerStr = JSON.stringify(response.headers)
@@ -58,6 +60,7 @@ http.interceptors.response.use(response => {
 	// }
 	return response
 }, error => {
+	uni.hideLoading()
 	return Promise.reject(error.message)
 })
 

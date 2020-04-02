@@ -1552,7 +1552,7 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
-/***/ 123:
+/***/ 124:
 /*!****************************************************!*\
   !*** D:/uniapp/product/uni-mall/static/js/util.js ***!
   \****************************************************/
@@ -1712,7 +1712,7 @@ var cloneObj = function cloneObj(obj) {
 
 /***/ }),
 
-/***/ 124:
+/***/ 125:
 /*!*****************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/static/qqmap-wx-jssdk1.2/qqmap-wx-jssdk.js ***!
   \*****************************************************************************/
@@ -2987,7 +2987,8 @@ var store = new _vuex.default.Store({
     indexaction: {},
     shoppingNumber: 0,
     orderList: [],
-    addressList: [] },
+    addressList: [],
+    address: {} },
 
   mutations: {},
   actions: {} });var _default =
@@ -4122,9 +4123,9 @@ var sig = 'X0ESh7L0avInLGjVvq8yk8Q7KeBC9R';var _default =
 
     return _index.default.get("".concat(map, "/suggestion?key=").concat(key, "&keyword=").concat(keyword, "&location=").concat(location, "&region=").concat(region, "&sig=").concat(a));
   },
-  ipLocation: function ipLocation() {
-    var a = (0, _md.default)("/ws/location/v1/ip?ip=117.173.223.140&key=".concat(key, "&output=json").concat(sig));
-    return _index.default.get("/api/ws/location/v1/ip?ip=117.173.223.140&key=".concat(key, "&output=json&sig=").concat(a));
+  ipLocation: function ipLocation(ip) {
+    var a = (0, _md.default)("/ws/location/v1/ip?ip=".concat(ip, "&key=").concat(key, "&output=json").concat(sig));
+    return _index.default.get("/api/ws/location/v1/ip?ip=".concat(ip, "&key=").concat(key, "&output=json&sig=").concat(a));
   },
   getLocation: function getLocation(location) {
     var a = (0, _md.default)("/ws/geocoder/v1/?key=".concat(key, "&location=").concat(location).concat(sig));
@@ -4141,7 +4142,7 @@ var sig = 'X0ESh7L0avInLGjVvq8yk8Q7KeBC9R';var _default =
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _gangdiedaoUniAxios = _interopRequireDefault(__webpack_require__(/*! @/js_sdk/gangdiedao-uni-axios */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _gangdiedaoUniAxios = _interopRequireDefault(__webpack_require__(/*! @/js_sdk/gangdiedao-uni-axios */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /**
                                                                                                                                                                                                                                                                                               * 请求接口日志记录
@@ -4182,6 +4183,7 @@ http.interceptors.request.use(function (config) {
   // const cookie = uni.getStorageSync('cookie')
   // 设置Cookie
   // config.headers.Cookie = cookie
+  uni.showLoading();
   _reqlog(config);
   return config;
 });
@@ -4189,6 +4191,7 @@ http.interceptors.request.use(function (config) {
 // 拦截器 在请求之后拦截
 http.interceptors.response.use(function (response) {
   _reslog(response);
+  uni.hideLoading();
   // code...
   // 获取cookie
   // let headerStr = JSON.stringify(response.headers)
@@ -4201,10 +4204,12 @@ http.interceptors.response.use(function (response) {
   // }
   return response;
 }, function (error) {
+  uni.hideLoading();
   return Promise.reject(error.message);
 });var _default =
 
 http;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -10381,7 +10386,405 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 220:
+/***/ 23:
+/*!******************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/utils.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bind = __webpack_require__(/*! ./helpers/bind */ 24);
+var isBuffer = __webpack_require__(/*! is-buffer */ 25);
+
+/*global toString:true*/
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+/**
+                                           * Determine if a value is an Array
+                                           *
+                                           * @param {Object} val The value to test
+                                           * @returns {boolean} True if value is an Array, otherwise false
+                                           */
+function isArray(val) {
+  return toString.call(val) === '[object Array]';
+}
+
+/**
+   * Determine if a value is an ArrayBuffer
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+   */
+function isArrayBuffer(val) {
+  return toString.call(val) === '[object ArrayBuffer]';
+}
+
+/**
+   * Determine if a value is a FormData
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an FormData, otherwise false
+   */
+function isFormData(val) {
+  return typeof FormData !== 'undefined' && val instanceof FormData;
+}
+
+/**
+   * Determine if a value is a view on an ArrayBuffer
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+   */
+function isArrayBufferView(val) {
+  var result;
+  if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = val && val.buffer && val.buffer instanceof ArrayBuffer;
+  }
+  return result;
+}
+
+/**
+   * Determine if a value is a String
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a String, otherwise false
+   */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+   * Determine if a value is a Number
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Number, otherwise false
+   */
+function isNumber(val) {
+  return typeof val === 'number';
+}
+
+/**
+   * Determine if a value is undefined
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if the value is undefined, otherwise false
+   */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+/**
+   * Determine if a value is an Object
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is an Object, otherwise false
+   */
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
+
+/**
+   * Determine if a value is a Date
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Date, otherwise false
+   */
+function isDate(val) {
+  return toString.call(val) === '[object Date]';
+}
+
+/**
+   * Determine if a value is a File
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a File, otherwise false
+   */
+function isFile(val) {
+  return toString.call(val) === '[object File]';
+}
+
+/**
+   * Determine if a value is a Blob
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Blob, otherwise false
+   */
+function isBlob(val) {
+  return toString.call(val) === '[object Blob]';
+}
+
+/**
+   * Determine if a value is a Function
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Function, otherwise false
+   */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
+
+/**
+   * Determine if a value is a Stream
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a Stream, otherwise false
+   */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+   * Determine if a value is a URLSearchParams object
+   *
+   * @param {Object} val The value to test
+   * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+   */
+function isURLSearchParams(val) {
+  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+}
+
+/**
+   * Trim excess whitespace off the beginning and end of a string
+   *
+   * @param {String} str The String to trim
+   * @returns {String} The String freed of excess whitespace
+   */
+function trim(str) {
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+/**
+   * Determine if we're running in a standard browser environment
+   *
+   * This allows axios to run in a web worker, and react-native.
+   * Both environments support XMLHttpRequest, but not fully standard globals.
+   *
+   * web workers:
+   *  typeof window -> undefined
+   *  typeof document -> undefined
+   *
+   * react-native:
+   *  navigator.product -> 'ReactNative'
+   * nativescript
+   *  navigator.product -> 'NativeScript' or 'NS'
+   */
+function isStandardBrowserEnv() {
+  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+  navigator.product === 'NativeScript' ||
+  navigator.product === 'NS')) {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined');
+
+}
+
+/**
+   * Iterate over an Array or an Object invoking a function for each item.
+   *
+   * If `obj` is an Array callback will be called passing
+   * the value, index, and complete array for each item.
+   *
+   * If 'obj' is an Object callback will be called passing
+   * the value, key, and complete object for each property.
+   *
+   * @param {Object|Array} obj The object to iterate
+   * @param {Function} fn The callback to invoke for each item
+   */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== 'object') {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+   * Accepts varargs expecting each argument to be an object, then
+   * immutably merges the properties of each object and returns result.
+   *
+   * When multiple objects contain the same key the later object in
+   * the arguments list will take precedence.
+   *
+   * Example:
+   *
+   * ```js
+   * var result = merge({foo: 123}, {foo: 456});
+   * console.log(result.foo); // outputs 456
+   * ```
+   *
+   * @param {Object} obj1 Object to merge
+   * @returns {Object} Result of all merge properties
+   */
+function merge() /* obj1, obj2, obj3, ... */{
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = merge(result[key], val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+   * Function equal to merge with the difference being that no reference
+   * to original objects is kept.
+   *
+   * @see merge
+   * @param {Object} obj1 Object to merge
+   * @returns {Object} Result of all merge properties
+   */
+function deepMerge() /* obj1, obj2, obj3, ... */{
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = deepMerge(result[key], val);
+    } else if (typeof val === 'object') {
+      result[key] = deepMerge({}, val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+   * Extends object a by mutably adding to it the properties of object b.
+   *
+   * @param {Object} a The object to be extended
+   * @param {Object} b The object to copy properties from
+   * @param {Object} thisArg The object to bind function to
+   * @return {Object} The resulting value of object a
+   */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  deepMerge: deepMerge,
+  extend: extend,
+  trim: trim };
+
+/***/ }),
+
+/***/ 24:
+/*!*************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/helpers/bind.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+/***/ }),
+
+/***/ 25:
+/*!*****************************************!*\
+  !*** ./node_modules/is-buffer/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+}
+
+
+/***/ }),
+
+/***/ 253:
 /*!*****************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/jyf-parser/libs/MpHtmlParser.js ***!
   \*****************************************************************************/
@@ -10396,9 +10799,9 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        author：JinYufeng
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        update：2020/03/26
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-var cfg = __webpack_require__(/*! ./config.js */ 221),
+var cfg = __webpack_require__(/*! ./config.js */ 254),
 blankChar = cfg.blankChar,
-CssHandler = __webpack_require__(/*! ./CssHandler.js */ 222),_wx$getSystemInfoSync =
+CssHandler = __webpack_require__(/*! ./CssHandler.js */ 255),_wx$getSystemInfoSync =
 
 
 
@@ -10970,7 +11373,7 @@ module.exports = MpHtmlParser;
 
 /***/ }),
 
-/***/ 221:
+/***/ 254:
 /*!***********************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/jyf-parser/libs/config.js ***!
   \***********************************************************************/
@@ -11061,7 +11464,7 @@ function makeMap(str) {
 
 /***/ }),
 
-/***/ 222:
+/***/ 255:
 /*!***************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/jyf-parser/libs/CssHandler.js ***!
   \***************************************************************************/
@@ -11076,7 +11479,7 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        author：JinYufeng
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        update：2020/03/15
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-var cfg = __webpack_require__(/*! ./config.js */ 221);var
+var cfg = __webpack_require__(/*! ./config.js */ 254);var
 CssHandler = /*#__PURE__*/function () {
   function CssHandler(tagStyle) {var _this = this;_classCallCheck(this, CssHandler);_defineProperty(this, "getStyle",
 
@@ -11170,404 +11573,6 @@ CssParser = /*#__PURE__*/function () {
       this.list = [];
       this.state = this.Space;
     } }]);return CssParser;}();
-
-/***/ }),
-
-/***/ 23:
-/*!******************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/utils.js ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var bind = __webpack_require__(/*! ./helpers/bind */ 24);
-var isBuffer = __webpack_require__(/*! is-buffer */ 25);
-
-/*global toString:true*/
-
-// utils is a library of generic helper functions non-specific to axios
-
-var toString = Object.prototype.toString;
-
-/**
-                                           * Determine if a value is an Array
-                                           *
-                                           * @param {Object} val The value to test
-                                           * @returns {boolean} True if value is an Array, otherwise false
-                                           */
-function isArray(val) {
-  return toString.call(val) === '[object Array]';
-}
-
-/**
-   * Determine if a value is an ArrayBuffer
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is an ArrayBuffer, otherwise false
-   */
-function isArrayBuffer(val) {
-  return toString.call(val) === '[object ArrayBuffer]';
-}
-
-/**
-   * Determine if a value is a FormData
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is an FormData, otherwise false
-   */
-function isFormData(val) {
-  return typeof FormData !== 'undefined' && val instanceof FormData;
-}
-
-/**
-   * Determine if a value is a view on an ArrayBuffer
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
-   */
-function isArrayBufferView(val) {
-  var result;
-  if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView) {
-    result = ArrayBuffer.isView(val);
-  } else {
-    result = val && val.buffer && val.buffer instanceof ArrayBuffer;
-  }
-  return result;
-}
-
-/**
-   * Determine if a value is a String
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a String, otherwise false
-   */
-function isString(val) {
-  return typeof val === 'string';
-}
-
-/**
-   * Determine if a value is a Number
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a Number, otherwise false
-   */
-function isNumber(val) {
-  return typeof val === 'number';
-}
-
-/**
-   * Determine if a value is undefined
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if the value is undefined, otherwise false
-   */
-function isUndefined(val) {
-  return typeof val === 'undefined';
-}
-
-/**
-   * Determine if a value is an Object
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is an Object, otherwise false
-   */
-function isObject(val) {
-  return val !== null && typeof val === 'object';
-}
-
-/**
-   * Determine if a value is a Date
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a Date, otherwise false
-   */
-function isDate(val) {
-  return toString.call(val) === '[object Date]';
-}
-
-/**
-   * Determine if a value is a File
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a File, otherwise false
-   */
-function isFile(val) {
-  return toString.call(val) === '[object File]';
-}
-
-/**
-   * Determine if a value is a Blob
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a Blob, otherwise false
-   */
-function isBlob(val) {
-  return toString.call(val) === '[object Blob]';
-}
-
-/**
-   * Determine if a value is a Function
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a Function, otherwise false
-   */
-function isFunction(val) {
-  return toString.call(val) === '[object Function]';
-}
-
-/**
-   * Determine if a value is a Stream
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a Stream, otherwise false
-   */
-function isStream(val) {
-  return isObject(val) && isFunction(val.pipe);
-}
-
-/**
-   * Determine if a value is a URLSearchParams object
-   *
-   * @param {Object} val The value to test
-   * @returns {boolean} True if value is a URLSearchParams object, otherwise false
-   */
-function isURLSearchParams(val) {
-  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
-}
-
-/**
-   * Trim excess whitespace off the beginning and end of a string
-   *
-   * @param {String} str The String to trim
-   * @returns {String} The String freed of excess whitespace
-   */
-function trim(str) {
-  return str.replace(/^\s*/, '').replace(/\s*$/, '');
-}
-
-/**
-   * Determine if we're running in a standard browser environment
-   *
-   * This allows axios to run in a web worker, and react-native.
-   * Both environments support XMLHttpRequest, but not fully standard globals.
-   *
-   * web workers:
-   *  typeof window -> undefined
-   *  typeof document -> undefined
-   *
-   * react-native:
-   *  navigator.product -> 'ReactNative'
-   * nativescript
-   *  navigator.product -> 'NativeScript' or 'NS'
-   */
-function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
-  navigator.product === 'NativeScript' ||
-  navigator.product === 'NS')) {
-    return false;
-  }
-  return (
-    typeof window !== 'undefined' &&
-    typeof document !== 'undefined');
-
-}
-
-/**
-   * Iterate over an Array or an Object invoking a function for each item.
-   *
-   * If `obj` is an Array callback will be called passing
-   * the value, index, and complete array for each item.
-   *
-   * If 'obj' is an Object callback will be called passing
-   * the value, key, and complete object for each property.
-   *
-   * @param {Object|Array} obj The object to iterate
-   * @param {Function} fn The callback to invoke for each item
-   */
-function forEach(obj, fn) {
-  // Don't bother if no value provided
-  if (obj === null || typeof obj === 'undefined') {
-    return;
-  }
-
-  // Force an array if not already something iterable
-  if (typeof obj !== 'object') {
-    /*eslint no-param-reassign:0*/
-    obj = [obj];
-  }
-
-  if (isArray(obj)) {
-    // Iterate over array values
-    for (var i = 0, l = obj.length; i < l; i++) {
-      fn.call(null, obj[i], i, obj);
-    }
-  } else {
-    // Iterate over object keys
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        fn.call(null, obj[key], key, obj);
-      }
-    }
-  }
-}
-
-/**
-   * Accepts varargs expecting each argument to be an object, then
-   * immutably merges the properties of each object and returns result.
-   *
-   * When multiple objects contain the same key the later object in
-   * the arguments list will take precedence.
-   *
-   * Example:
-   *
-   * ```js
-   * var result = merge({foo: 123}, {foo: 456});
-   * console.log(result.foo); // outputs 456
-   * ```
-   *
-   * @param {Object} obj1 Object to merge
-   * @returns {Object} Result of all merge properties
-   */
-function merge() /* obj1, obj2, obj3, ... */{
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
-   * Function equal to merge with the difference being that no reference
-   * to original objects is kept.
-   *
-   * @see merge
-   * @param {Object} obj1 Object to merge
-   * @returns {Object} Result of all merge properties
-   */
-function deepMerge() /* obj1, obj2, obj3, ... */{
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = deepMerge(result[key], val);
-    } else if (typeof val === 'object') {
-      result[key] = deepMerge({}, val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
-   * Extends object a by mutably adding to it the properties of object b.
-   *
-   * @param {Object} a The object to be extended
-   * @param {Object} b The object to copy properties from
-   * @param {Object} thisArg The object to bind function to
-   * @return {Object} The resulting value of object a
-   */
-function extend(a, b, thisArg) {
-  forEach(b, function assignValue(val, key) {
-    if (thisArg && typeof val === 'function') {
-      a[key] = bind(val, thisArg);
-    } else {
-      a[key] = val;
-    }
-  });
-  return a;
-}
-
-module.exports = {
-  isArray: isArray,
-  isArrayBuffer: isArrayBuffer,
-  isBuffer: isBuffer,
-  isFormData: isFormData,
-  isArrayBufferView: isArrayBufferView,
-  isString: isString,
-  isNumber: isNumber,
-  isObject: isObject,
-  isUndefined: isUndefined,
-  isDate: isDate,
-  isFile: isFile,
-  isBlob: isBlob,
-  isFunction: isFunction,
-  isStream: isStream,
-  isURLSearchParams: isURLSearchParams,
-  isStandardBrowserEnv: isStandardBrowserEnv,
-  forEach: forEach,
-  merge: merge,
-  deepMerge: deepMerge,
-  extend: extend,
-  trim: trim };
-
-/***/ }),
-
-/***/ 24:
-/*!*************************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/helpers/bind.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function bind(fn, thisArg) {
-  return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
-  };
-};
-
-/***/ }),
-
-/***/ 25:
-/*!*****************************************!*\
-  !*** ./node_modules/is-buffer/index.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
 
 /***/ }),
 
@@ -11668,7 +11673,249 @@ module.exports = Axios;
 
 /***/ }),
 
-/***/ 265:
+/***/ 27:
+/*!*****************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/helpers/buildURL.js ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ 23);
+
+function encode(val) {
+  return encodeURIComponent(val).
+  replace(/%40/gi, '@').
+  replace(/%3A/gi, ':').
+  replace(/%24/g, '$').
+  replace(/%2C/gi, ',').
+  replace(/%20/g, '+').
+  replace(/%5B/gi, '[').
+  replace(/%5D/gi, ']');
+}
+
+/**
+   * Build a URL by appending params to the end
+   *
+   * @param {string} url The base of the url (e.g., http://www.google.com)
+   * @param {object} [params] The params to be appended
+   * @returns {string} The formatted url
+   */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    var hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+/***/ }),
+
+/***/ 28:
+/*!************************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/core/InterceptorManager.js ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ 23);
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+   * Add a new interceptor to the stack
+   *
+   * @param {Function} fulfilled The function to handle `then` for a `Promise`
+   * @param {Function} rejected The function to handle `reject` for a `Promise`
+   *
+   * @return {Number} An ID used to remove interceptor later
+   */
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected });
+
+  return this.handlers.length - 1;
+};
+
+/**
+    * Remove an interceptor from the stack
+    *
+    * @param {Number} id The ID that was returned by `use`
+    */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+    * Iterate over all the registered interceptors
+    *
+    * This method is particularly useful for skipping over any
+    * interceptors that may have become `null` calling `eject`.
+    *
+    * @param {Function} fn The function to call for each interceptor
+    */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+/***/ }),
+
+/***/ 29:
+/*!*********************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/core/dispatchRequest.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ 23);
+var transformData = __webpack_require__(/*! ./transformData */ 30);
+var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 31);
+var defaults = __webpack_require__(/*! ../defaults */ 32);
+var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 43);
+var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 44);
+
+/**
+                                                        * Throws a `Cancel` if cancellation has been requested.
+                                                        */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+   * Dispatch a request to the server using the configured adapter.
+   *
+   * @param {object} config The config that is to be used for the request
+   * @returns {Promise} The Promise to be fulfilled
+   */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Support baseURL config
+  if (config.baseURL && !isAbsoluteURL(config.url)) {
+    config.url = combineURLs(config.baseURL, config.url);
+  }
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(
+  config.data,
+  config.headers,
+  config.transformRequest);
+
+
+  // Flatten headers
+  config.headers = utils.merge(
+  config.headers.common || {},
+  config.headers[config.method] || {},
+  config.headers || {});
+
+
+  utils.forEach(
+  ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+  function cleanHeaderConfig(method) {
+    delete config.headers[method];
+  });
+
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData(
+    response.data,
+    response.headers,
+    config.transformResponse);
+
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData(
+        reason.response.data,
+        reason.response.headers,
+        config.transformResponse);
+
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+/***/ }),
+
+/***/ 298:
 /*!**************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/feng-parse/libs/html2json.js ***!
   \**************************************************************************/
@@ -11690,8 +11937,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _wxDiscode = _interopRequireDefault(__webpack_require__(/*! ./wxDiscode */ 266));
-var _htmlparser = _interopRequireDefault(__webpack_require__(/*! ./htmlparser */ 267));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /**
+var _wxDiscode = _interopRequireDefault(__webpack_require__(/*! ./wxDiscode */ 299));
+var _htmlparser = _interopRequireDefault(__webpack_require__(/*! ./htmlparser */ 300));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /**
                                                                                                                                                                  * html2Json 改造来自: https://github.com/Jxck/html2json
                                                                                                                                                                  *
                                                                                                                                                                  *
@@ -11970,7 +12217,7 @@ html2json;exports.default = _default;
 
 /***/ }),
 
-/***/ 266:
+/***/ 299:
 /*!**************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/feng-parse/libs/wxDiscode.js ***!
   \**************************************************************************/
@@ -12189,7 +12436,69 @@ function urlToHttpUrl(url, domain) {
 
 /***/ }),
 
-/***/ 267:
+/***/ 3:
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 30:
+/*!*******************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/core/transformData.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ 23);
+
+/**
+                                    * Transform the data for a request or a response
+                                    *
+                                    * @param {Object|String} data The data to be transformed
+                                    * @param {Array} headers The headers for the request or response
+                                    * @param {Array|Function} fns A single function or Array of functions
+                                    * @returns {*} The resulting transformed data
+                                    */
+module.exports = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+/***/ }),
+
+/***/ 300:
 /*!***************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/feng-parse/libs/htmlparser.js ***!
   \***************************************************************************/
@@ -12356,152 +12665,23 @@ HTMLParser;exports.default = _default;
 
 /***/ }),
 
-/***/ 27:
-/*!*****************************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/helpers/buildURL.js ***!
-  \*****************************************************************************/
+/***/ 31:
+/*!****************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/cancel/isCancel.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(/*! ./../utils */ 23);
-
-function encode(val) {
-  return encodeURIComponent(val).
-  replace(/%40/gi, '@').
-  replace(/%3A/gi, ':').
-  replace(/%24/g, '$').
-  replace(/%2C/gi, ',').
-  replace(/%20/g, '+').
-  replace(/%5B/gi, '[').
-  replace(/%5D/gi, ']');
-}
-
-/**
-   * Build a URL by appending params to the end
-   *
-   * @param {string} url The base of the url (e.g., http://www.google.com)
-   * @param {object} [params] The params to be appended
-   * @returns {string} The formatted url
-   */
-module.exports = function buildURL(url, params, paramsSerializer) {
-  /*eslint no-param-reassign:0*/
-  if (!params) {
-    return url;
-  }
-
-  var serializedParams;
-  if (paramsSerializer) {
-    serializedParams = paramsSerializer(params);
-  } else if (utils.isURLSearchParams(params)) {
-    serializedParams = params.toString();
-  } else {
-    var parts = [];
-
-    utils.forEach(params, function serialize(val, key) {
-      if (val === null || typeof val === 'undefined') {
-        return;
-      }
-
-      if (utils.isArray(val)) {
-        key = key + '[]';
-      } else {
-        val = [val];
-      }
-
-      utils.forEach(val, function parseValue(v) {
-        if (utils.isDate(v)) {
-          v = v.toISOString();
-        } else if (utils.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        parts.push(encode(key) + '=' + encode(v));
-      });
-    });
-
-    serializedParams = parts.join('&');
-  }
-
-  if (serializedParams) {
-    var hashmarkIndex = url.indexOf('#');
-    if (hashmarkIndex !== -1) {
-      url = url.slice(0, hashmarkIndex);
-    }
-
-    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
-  }
-
-  return url;
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
 };
 
 /***/ }),
 
-/***/ 28:
-/*!************************************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/core/InterceptorManager.js ***!
-  \************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./../utils */ 23);
-
-function InterceptorManager() {
-  this.handlers = [];
-}
-
-/**
-   * Add a new interceptor to the stack
-   *
-   * @param {Function} fulfilled The function to handle `then` for a `Promise`
-   * @param {Function} rejected The function to handle `reject` for a `Promise`
-   *
-   * @return {Number} An ID used to remove interceptor later
-   */
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected });
-
-  return this.handlers.length - 1;
-};
-
-/**
-    * Remove an interceptor from the stack
-    *
-    * @param {Number} id The ID that was returned by `use`
-    */
-InterceptorManager.prototype.eject = function eject(id) {
-  if (this.handlers[id]) {
-    this.handlers[id] = null;
-  }
-};
-
-/**
-    * Iterate over all the registered interceptors
-    *
-    * This method is particularly useful for skipping over any
-    * interceptors that may have become `null` calling `eject`.
-    *
-    * @param {Function} fn The function to call for each interceptor
-    */
-InterceptorManager.prototype.forEach = function forEach(fn) {
-  utils.forEach(this.handlers, function forEachHandler(h) {
-    if (h !== null) {
-      fn(h);
-    }
-  });
-};
-
-module.exports = InterceptorManager;
-
-/***/ }),
-
-/***/ 280:
+/***/ 313:
 /*!**********************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/simple-address/city-data/province.js ***!
   \**********************************************************************************/
@@ -12655,7 +12835,7 @@ provinceData;exports.default = _default;
 
 /***/ }),
 
-/***/ 281:
+/***/ 314:
 /*!******************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/simple-address/city-data/city.js ***!
   \******************************************************************************/
@@ -14173,7 +14353,7 @@ cityData;exports.default = _default;
 
 /***/ }),
 
-/***/ 282:
+/***/ 315:
 /*!******************************************************************************!*\
   !*** D:/uniapp/product/uni-mall/components/simple-address/city-data/area.js ***!
   \******************************************************************************/
@@ -26732,287 +26912,6 @@ areaData;exports.default = _default;
 
 /***/ }),
 
-/***/ 29:
-/*!*********************************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/core/dispatchRequest.js ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./../utils */ 23);
-var transformData = __webpack_require__(/*! ./transformData */ 30);
-var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 31);
-var defaults = __webpack_require__(/*! ../defaults */ 32);
-var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 43);
-var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 44);
-
-/**
-                                                        * Throws a `Cancel` if cancellation has been requested.
-                                                        */
-function throwIfCancellationRequested(config) {
-  if (config.cancelToken) {
-    config.cancelToken.throwIfRequested();
-  }
-}
-
-/**
-   * Dispatch a request to the server using the configured adapter.
-   *
-   * @param {object} config The config that is to be used for the request
-   * @returns {Promise} The Promise to be fulfilled
-   */
-module.exports = function dispatchRequest(config) {
-  throwIfCancellationRequested(config);
-
-  // Support baseURL config
-  if (config.baseURL && !isAbsoluteURL(config.url)) {
-    config.url = combineURLs(config.baseURL, config.url);
-  }
-
-  // Ensure headers exist
-  config.headers = config.headers || {};
-
-  // Transform request data
-  config.data = transformData(
-  config.data,
-  config.headers,
-  config.transformRequest);
-
-
-  // Flatten headers
-  config.headers = utils.merge(
-  config.headers.common || {},
-  config.headers[config.method] || {},
-  config.headers || {});
-
-
-  utils.forEach(
-  ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
-  function cleanHeaderConfig(method) {
-    delete config.headers[method];
-  });
-
-
-  var adapter = config.adapter || defaults.adapter;
-
-  return adapter(config).then(function onAdapterResolution(response) {
-    throwIfCancellationRequested(config);
-
-    // Transform response data
-    response.data = transformData(
-    response.data,
-    response.headers,
-    config.transformResponse);
-
-
-    return response;
-  }, function onAdapterRejection(reason) {
-    if (!isCancel(reason)) {
-      throwIfCancellationRequested(config);
-
-      // Transform response data
-      if (reason && reason.response) {
-        reason.response.data = transformData(
-        reason.response.data,
-        reason.response.headers,
-        config.transformResponse);
-
-      }
-    }
-
-    return Promise.reject(reason);
-  });
-};
-
-/***/ }),
-
-/***/ 290:
-/*!****************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/components/uni-icons/icons.js ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  'contact': "\uE100",
-  'person': "\uE101",
-  'personadd': "\uE102",
-  'contact-filled': "\uE130",
-  'person-filled': "\uE131",
-  'personadd-filled': "\uE132",
-  'phone': "\uE200",
-  'email': "\uE201",
-  'chatbubble': "\uE202",
-  'chatboxes': "\uE203",
-  'phone-filled': "\uE230",
-  'email-filled': "\uE231",
-  'chatbubble-filled': "\uE232",
-  'chatboxes-filled': "\uE233",
-  'weibo': "\uE260",
-  'weixin': "\uE261",
-  'pengyouquan': "\uE262",
-  'chat': "\uE263",
-  'qq': "\uE264",
-  'videocam': "\uE300",
-  'camera': "\uE301",
-  'mic': "\uE302",
-  'location': "\uE303",
-  'mic-filled': "\uE332",
-  'speech': "\uE332",
-  'location-filled': "\uE333",
-  'micoff': "\uE360",
-  'image': "\uE363",
-  'map': "\uE364",
-  'compose': "\uE400",
-  'trash': "\uE401",
-  'upload': "\uE402",
-  'download': "\uE403",
-  'close': "\uE404",
-  'redo': "\uE405",
-  'undo': "\uE406",
-  'refresh': "\uE407",
-  'star': "\uE408",
-  'plus': "\uE409",
-  'minus': "\uE410",
-  'circle': "\uE411",
-  'checkbox': "\uE411",
-  'close-filled': "\uE434",
-  'clear': "\uE434",
-  'refresh-filled': "\uE437",
-  'star-filled': "\uE438",
-  'plus-filled': "\uE439",
-  'minus-filled': "\uE440",
-  'circle-filled': "\uE441",
-  'checkbox-filled': "\uE442",
-  'closeempty': "\uE460",
-  'refreshempty': "\uE461",
-  'reload': "\uE462",
-  'starhalf': "\uE463",
-  'spinner': "\uE464",
-  'spinner-cycle': "\uE465",
-  'search': "\uE466",
-  'plusempty': "\uE468",
-  'forward': "\uE470",
-  'back': "\uE471",
-  'left-nav': "\uE471",
-  'checkmarkempty': "\uE472",
-  'home': "\uE500",
-  'navigate': "\uE501",
-  'gear': "\uE502",
-  'paperplane': "\uE503",
-  'info': "\uE504",
-  'help': "\uE505",
-  'locked': "\uE506",
-  'more': "\uE507",
-  'flag': "\uE508",
-  'home-filled': "\uE530",
-  'gear-filled': "\uE532",
-  'info-filled': "\uE534",
-  'help-filled': "\uE535",
-  'more-filled': "\uE537",
-  'settings': "\uE560",
-  'list': "\uE562",
-  'bars': "\uE563",
-  'loop': "\uE565",
-  'paperclip': "\uE567",
-  'eye': "\uE568",
-  'arrowup': "\uE580",
-  'arrowdown': "\uE581",
-  'arrowleft': "\uE582",
-  'arrowright': "\uE583",
-  'arrowthinup': "\uE584",
-  'arrowthindown': "\uE585",
-  'arrowthinleft': "\uE586",
-  'arrowthinright': "\uE587",
-  'pulldown': "\uE588",
-  'closefill': "\uE589",
-  'sound': "\uE590",
-  'scan': "\uE612" };exports.default = _default;
-
-/***/ }),
-
-/***/ 3:
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ 30:
-/*!*******************************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/core/transformData.js ***!
-  \*******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./../utils */ 23);
-
-/**
-                                    * Transform the data for a request or a response
-                                    *
-                                    * @param {Object|String} data The data to be transformed
-                                    * @param {Array} headers The headers for the request or response
-                                    * @param {Array|Function} fns A single function or Array of functions
-                                    * @returns {*} The resulting transformed data
-                                    */
-module.exports = function transformData(data, headers, fns) {
-  /*eslint no-param-reassign:0*/
-  utils.forEach(fns, function transform(fn) {
-    data = fn(data, headers);
-  });
-
-  return data;
-};
-
-/***/ }),
-
-/***/ 31:
-/*!****************************************************************************!*\
-  !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/cancel/isCancel.js ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
-
-/***/ }),
-
 /***/ 32:
 /*!*********************************************************************!*\
   !*** D:/uniapp/product/uni-mall/node_modules/axios/lib/defaults.js ***!
@@ -27161,6 +27060,112 @@ exports.uptime = exports.memoryUsage =
 exports.uvCounters = function() {};
 exports.features = {};
 
+
+/***/ }),
+
+/***/ 330:
+/*!****************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/components/uni-icons/icons.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  'contact': "\uE100",
+  'person': "\uE101",
+  'personadd': "\uE102",
+  'contact-filled': "\uE130",
+  'person-filled': "\uE131",
+  'personadd-filled': "\uE132",
+  'phone': "\uE200",
+  'email': "\uE201",
+  'chatbubble': "\uE202",
+  'chatboxes': "\uE203",
+  'phone-filled': "\uE230",
+  'email-filled': "\uE231",
+  'chatbubble-filled': "\uE232",
+  'chatboxes-filled': "\uE233",
+  'weibo': "\uE260",
+  'weixin': "\uE261",
+  'pengyouquan': "\uE262",
+  'chat': "\uE263",
+  'qq': "\uE264",
+  'videocam': "\uE300",
+  'camera': "\uE301",
+  'mic': "\uE302",
+  'location': "\uE303",
+  'mic-filled': "\uE332",
+  'speech': "\uE332",
+  'location-filled': "\uE333",
+  'micoff': "\uE360",
+  'image': "\uE363",
+  'map': "\uE364",
+  'compose': "\uE400",
+  'trash': "\uE401",
+  'upload': "\uE402",
+  'download': "\uE403",
+  'close': "\uE404",
+  'redo': "\uE405",
+  'undo': "\uE406",
+  'refresh': "\uE407",
+  'star': "\uE408",
+  'plus': "\uE409",
+  'minus': "\uE410",
+  'circle': "\uE411",
+  'checkbox': "\uE411",
+  'close-filled': "\uE434",
+  'clear': "\uE434",
+  'refresh-filled': "\uE437",
+  'star-filled': "\uE438",
+  'plus-filled': "\uE439",
+  'minus-filled': "\uE440",
+  'circle-filled': "\uE441",
+  'checkbox-filled': "\uE442",
+  'closeempty': "\uE460",
+  'refreshempty': "\uE461",
+  'reload': "\uE462",
+  'starhalf': "\uE463",
+  'spinner': "\uE464",
+  'spinner-cycle': "\uE465",
+  'search': "\uE466",
+  'plusempty': "\uE468",
+  'forward': "\uE470",
+  'back': "\uE471",
+  'left-nav': "\uE471",
+  'checkmarkempty': "\uE472",
+  'home': "\uE500",
+  'navigate': "\uE501",
+  'gear': "\uE502",
+  'paperplane': "\uE503",
+  'info': "\uE504",
+  'help': "\uE505",
+  'locked': "\uE506",
+  'more': "\uE507",
+  'flag': "\uE508",
+  'home-filled': "\uE530",
+  'gear-filled': "\uE532",
+  'info-filled': "\uE534",
+  'help-filled': "\uE535",
+  'more-filled': "\uE537",
+  'settings': "\uE560",
+  'list': "\uE562",
+  'bars': "\uE563",
+  'loop': "\uE565",
+  'paperclip': "\uE567",
+  'eye': "\uE568",
+  'arrowup': "\uE580",
+  'arrowdown': "\uE581",
+  'arrowleft': "\uE582",
+  'arrowright': "\uE583",
+  'arrowthinup': "\uE584",
+  'arrowthindown': "\uE585",
+  'arrowthinleft': "\uE586",
+  'arrowthinright': "\uE587",
+  'pulldown': "\uE588",
+  'closefill': "\uE589",
+  'sound': "\uE590",
+  'scan': "\uE612" };exports.default = _default;
 
 /***/ }),
 
@@ -29558,6 +29563,18 @@ module.exports = charenc;
 
 /***/ }),
 
+/***/ 54:
+/*!********************************************************************************!*\
+  !*** D:/uniapp/product/uni-mall/node_modules/_dayjs@1.8.23@dayjs/dayjs.min.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+!function (t, n) { true ? module.exports = n() : undefined;}(void 0, function () {"use strict";var t = "millisecond",n = "second",e = "minute",r = "hour",i = "day",s = "week",u = "month",o = "quarter",a = "year",h = /^(\d{4})-?(\d{1,2})-?(\d{0,2})[^0-9]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?.?(\d{1,3})?$/,f = /\[([^\]]+)]|Y{2,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,c = function c(t, n, e) {var r = String(t);return !r || r.length >= n ? t : "" + Array(n + 1 - r.length).join(e) + t;},d = { s: c, z: function z(t) {var n = -t.utcOffset(),e = Math.abs(n),r = Math.floor(e / 60),i = e % 60;return (n <= 0 ? "+" : "-") + c(r, 2, "0") + ":" + c(i, 2, "0");}, m: function m(t, n) {var e = 12 * (n.year() - t.year()) + (n.month() - t.month()),r = t.clone().add(e, u),i = n - r < 0,s = t.clone().add(e + (i ? -1 : 1), u);return Number(-(e + (n - r) / (i ? r - s : s - r)) || 0);}, a: function a(t) {return t < 0 ? Math.ceil(t) || 0 : Math.floor(t);}, p: function p(h) {return { M: u, y: a, w: s, d: i, D: "date", h: r, m: e, s: n, ms: t, Q: o }[h] || String(h || "").toLowerCase().replace(/s$/, "");}, u: function u(t) {return void 0 === t;} },$ = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_") },l = "en",m = {};m[l] = $;var y = function y(t) {return t instanceof v;},M = function M(t, n, e) {var r;if (!t) return l;if ("string" == typeof t) m[t] && (r = t), n && (m[t] = n, r = t);else {var i = t.name;m[i] = t, r = i;}return !e && r && (l = r), r || !e && l;},g = function g(t, n, e) {if (y(t)) return t.clone();var r = n ? "string" == typeof n ? { format: n, pl: e } : n : {};return r.date = t, new v(r);},D = d;D.l = M, D.i = y, D.w = function (t, n) {return g(t, { locale: n.$L, utc: n.$u, $offset: n.$offset });};var v = function () {function c(t) {this.$L = this.$L || M(t.locale, null, !0), this.parse(t);}var d = c.prototype;return d.parse = function (t) {this.$d = function (t) {var n = t.date,e = t.utc;if (null === n) return new Date(NaN);if (D.u(n)) return new Date();if (n instanceof Date) return new Date(n);if ("string" == typeof n && !/Z$/i.test(n)) {var r = n.match(h);if (r) return e ? new Date(Date.UTC(r[1], r[2] - 1, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, r[7] || 0)) : new Date(r[1], r[2] - 1, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, r[7] || 0);}return new Date(n);}(t), this.init();}, d.init = function () {var t = this.$d;this.$y = t.getFullYear(), this.$M = t.getMonth(), this.$D = t.getDate(), this.$W = t.getDay(), this.$H = t.getHours(), this.$m = t.getMinutes(), this.$s = t.getSeconds(), this.$ms = t.getMilliseconds();}, d.$utils = function () {return D;}, d.isValid = function () {return !("Invalid Date" === this.$d.toString());}, d.isSame = function (t, n) {var e = g(t);return this.startOf(n) <= e && e <= this.endOf(n);}, d.isAfter = function (t, n) {return g(t) < this.startOf(n);}, d.isBefore = function (t, n) {return this.endOf(n) < g(t);}, d.$g = function (t, n, e) {return D.u(t) ? this[n] : this.set(e, t);}, d.year = function (t) {return this.$g(t, "$y", a);}, d.month = function (t) {return this.$g(t, "$M", u);}, d.day = function (t) {return this.$g(t, "$W", i);}, d.date = function (t) {return this.$g(t, "$D", "date");}, d.hour = function (t) {return this.$g(t, "$H", r);}, d.minute = function (t) {return this.$g(t, "$m", e);}, d.second = function (t) {return this.$g(t, "$s", n);}, d.millisecond = function (n) {return this.$g(n, "$ms", t);}, d.unix = function () {return Math.floor(this.valueOf() / 1e3);}, d.valueOf = function () {return this.$d.getTime();}, d.startOf = function (t, o) {var h = this,f = !!D.u(o) || o,c = D.p(t),d = function d(t, n) {var e = D.w(h.$u ? Date.UTC(h.$y, n, t) : new Date(h.$y, n, t), h);return f ? e : e.endOf(i);},$ = function $(t, n) {return D.w(h.toDate()[t].apply(h.toDate(), (f ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(n)), h);},l = this.$W,m = this.$M,y = this.$D,M = "set" + (this.$u ? "UTC" : "");switch (c) {case a:return f ? d(1, 0) : d(31, 11);case u:return f ? d(1, m) : d(0, m + 1);case s:var g = this.$locale().weekStart || 0,v = (l < g ? l + 7 : l) - g;return d(f ? y - v : y + (6 - v), m);case i:case "date":return $(M + "Hours", 0);case r:return $(M + "Minutes", 1);case e:return $(M + "Seconds", 2);case n:return $(M + "Milliseconds", 3);default:return this.clone();}}, d.endOf = function (t) {return this.startOf(t, !1);}, d.$set = function (s, o) {var h,f = D.p(s),c = "set" + (this.$u ? "UTC" : ""),d = (h = {}, h[i] = c + "Date", h.date = c + "Date", h[u] = c + "Month", h[a] = c + "FullYear", h[r] = c + "Hours", h[e] = c + "Minutes", h[n] = c + "Seconds", h[t] = c + "Milliseconds", h)[f],$ = f === i ? this.$D + (o - this.$W) : o;if (f === u || f === a) {var l = this.clone().set("date", 1);l.$d[d]($), l.init(), this.$d = l.set("date", Math.min(this.$D, l.daysInMonth())).toDate();} else d && this.$d[d]($);return this.init(), this;}, d.set = function (t, n) {return this.clone().$set(t, n);}, d.get = function (t) {return this[D.p(t)]();}, d.add = function (t, o) {var h,f = this;t = Number(t);var c = D.p(o),d = function d(n) {var e = g(f);return D.w(e.date(e.date() + Math.round(n * t)), f);};if (c === u) return this.set(u, this.$M + t);if (c === a) return this.set(a, this.$y + t);if (c === i) return d(1);if (c === s) return d(7);var $ = (h = {}, h[e] = 6e4, h[r] = 36e5, h[n] = 1e3, h)[c] || 1,l = this.$d.getTime() + t * $;return D.w(l, this);}, d.subtract = function (t, n) {return this.add(-1 * t, n);}, d.format = function (t) {var n = this;if (!this.isValid()) return "Invalid Date";var e = t || "YYYY-MM-DDTHH:mm:ssZ",r = D.z(this),i = this.$locale(),s = this.$H,u = this.$m,o = this.$M,a = i.weekdays,h = i.months,c = function c(t, r, i, s) {return t && (t[r] || t(n, e)) || i[r].substr(0, s);},d = function d(t) {return D.s(s % 12 || 12, t, "0");},$ = i.meridiem || function (t, n, e) {var r = t < 12 ? "AM" : "PM";return e ? r.toLowerCase() : r;},l = { YY: String(this.$y).slice(-2), YYYY: this.$y, M: o + 1, MM: D.s(o + 1, 2, "0"), MMM: c(i.monthsShort, o, h, 3), MMMM: h[o] || h(this, e), D: this.$D, DD: D.s(this.$D, 2, "0"), d: String(this.$W), dd: c(i.weekdaysMin, this.$W, a, 2), ddd: c(i.weekdaysShort, this.$W, a, 3), dddd: a[this.$W], H: String(s), HH: D.s(s, 2, "0"), h: d(1), hh: d(2), a: $(s, u, !0), A: $(s, u, !1), m: String(u), mm: D.s(u, 2, "0"), s: String(this.$s), ss: D.s(this.$s, 2, "0"), SSS: D.s(this.$ms, 3, "0"), Z: r };return e.replace(f, function (t, n) {return n || l[t] || r.replace(":", "");});}, d.utcOffset = function () {return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);}, d.diff = function (t, h, f) {var c,d = D.p(h),$ = g(t),l = 6e4 * ($.utcOffset() - this.utcOffset()),m = this - $,y = D.m(this, $);return y = (c = {}, c[a] = y / 12, c[u] = y, c[o] = y / 3, c[s] = (m - l) / 6048e5, c[i] = (m - l) / 864e5, c[r] = m / 36e5, c[e] = m / 6e4, c[n] = m / 1e3, c)[d] || m, f ? y : D.a(y);}, d.daysInMonth = function () {return this.endOf(u).$D;}, d.$locale = function () {return m[this.$L];}, d.locale = function (t, n) {if (!t) return this.$L;var e = this.clone(),r = M(t, n, !0);return r && (e.$L = r), e;}, d.clone = function () {return D.w(this.$d, this);}, d.toDate = function () {return new Date(this.valueOf());}, d.toJSON = function () {return this.isValid() ? this.toISOString() : null;}, d.toISOString = function () {return this.$d.toISOString();}, d.toString = function () {return this.$d.toUTCString();}, c;}();return g.prototype = v.prototype, g.extend = function (t, n) {return t(n, v, g), g;}, g.locale = M, g.isDayjs = y, g.unix = function (t) {return g(1e3 * t);}, g.en = m[l], g.Ls = m, g;});
+
+/***/ }),
+
 /***/ 6:
 /*!******************************************************!*\
   !*** ./node_modules/@dcloudio/uni-stat/package.json ***!
@@ -29569,7 +29586,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 
 /***/ }),
 
-/***/ 60:
+/***/ 61:
 /*!**************************************************************!*\
   !*** D:/uniapp/product/uni-mall/static/js/qqmap-wx-jssdk.js ***!
   \**************************************************************/
@@ -30720,7 +30737,7 @@ module.exports = QQMapWX;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar", "wheel": "/components/index/wheel", "channel": "/components/index/channel", "brand": "/components/index/brand", "new-goods": "/components/index/newGoods", "topic": "/components/index/topic", "good": "/components/index/good", "load": "/components/index/load" }, "usingAutoImportComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar" } }, "pages/details/details": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "info": "/components/details/info", "jyf-parser": "/components/jyf-parser/jyf-parser", "good": "/components/index/good", "uni-goods-nav": "/components/uni-goods-nav/uni-goods-nav", "uni-popup": "/components/uni-popup/uni-popup", "uni-number-box": "/components/uni-number-box/uni-number-box" }, "usingAutoImportComponents": { "jyf-parser": "/components/jyf-parser/jyf-parser", "uni-goods-nav": "/components/uni-goods-nav/uni-goods-nav", "uni-popup": "/components/uni-popup/uni-popup", "uni-number-box": "/components/uni-number-box/uni-number-box" } }, "pages/special/special": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/category/category": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar" }, "usingAutoImportComponents": {} }, "pages/shoppingCar/shoppingCar": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "no-login": "/components/shoppingCar/noLogin", "uni-number-box": "/components/uni-number-box/uni-number-box" }, "usingAutoImportComponents": { "uni-number-box": "/components/uni-number-box/uni-number-box" } }, "pages/my/my": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "uni-popup": "/components/uni-popup/uni-popup" }, "usingAutoImportComponents": { "uni-popup": "/components/uni-popup/uni-popup" } }, "pages/specialDetails/specialDetails": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "u-parse": "/components/feng-parse/parse" }, "usingAutoImportComponents": {} }, "pages/categoryDetails/categoryDetails": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "xyz-tab": "/components/xyz-tab/xyz-tab", "good": "/components/index/good" }, "usingAutoImportComponents": {} }, "pages/map/map": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar", "u-parse": "/components/feng-parse/parse" }, "usingAutoImportComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar" } }, "pages/allGoods/allGoods": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "good": "/components/index/good" }, "usingAutoImportComponents": {} }, "pages/search/search": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar", "jyf-parser": "/components/jyf-parser/jyf-parser" }, "usingAutoImportComponents": { "uni-search-bar": "/components/uni-search-bar/uni-search-bar", "jyf-parser": "/components/jyf-parser/jyf-parser" } }, "pages/order/order": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/addressEdit/addressEdit": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C", "usingComponents": { "simple-address": "/components/simple-address/simple-address" }, "usingAutoImportComponents": { "simple-address": "/components/simple-address/simple-address" } } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/details/details": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/special/special": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/category/category": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/shoppingCar/shoppingCar": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/my/my": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/specialDetails/specialDetails": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/categoryDetails/categoryDetails": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/map/map": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/allGoods/allGoods": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/search/search": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/order/order": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/addressEdit/addressEdit": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/addressList/addressList": { "navigationBarTitleText": "严选商城", "navigationBarBackgroundColor": "#BE351C" }, "pages/collect/collect": { "navigationBarTitleText": "我的收藏", "navigationBarBackgroundColor": "#BE351C" }, "pages/lookHistory/lookHistory": { "navigationBarTitleText": "历史浏览", "navigationBarBackgroundColor": "#BE351C" }, "pages/service/service": { "navigationBarTitleText": "意见反馈", "navigationBarBackgroundColor": "#BE351C" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 

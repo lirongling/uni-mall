@@ -12,11 +12,13 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 9));
 
 var _index = _interopRequireDefault(__webpack_require__(/*! store/index.js */ 15));
-var _api = _interopRequireDefault(__webpack_require__(/*! http/api.js */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var _api = _interopRequireDefault(__webpack_require__(/*! http/api.js */ 17));
+var _dayjs = _interopRequireDefault(__webpack_require__(/*! dayjs */ 54));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 //把vuex定义成全局组件
 _vue.default.prototype.$store = _index.default;
 _vue.default.prototype.$api = _api.default;
+_vue.default.prototype.$dayjs = _dayjs.default;
 
 _vue.default.config.productionTip = false;
 
@@ -25,7 +27,8 @@ _App.default.mpType = 'app';
 var app = new _vue.default(_objectSpread({},
 _App.default, {
   store: _index.default,
-  api: _api.default }));
+  api: _api.default,
+  dayjs: _dayjs.default }));
 
 
 createApp(app).$mount();

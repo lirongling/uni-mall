@@ -6,7 +6,10 @@
 				{{item}}
 			</view>
 		</view>
-		<view class="content" v-if="shopList.length>0">
+		<view v-if="shopList&&shopList.length===0">
+			<noLogin :loginMsg="loginMsg" :shopList="shopList"></noLogin>
+		</view>
+		<view class="content" v-else>
 			<view class="content-item flex a-center j-between" v-for="(item,index) in shopList" :key="index">
 				<view class="left flex a-center">
 					<view class="check" @click="changeRadio(item)">
@@ -59,9 +62,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-else>
-			<noLogin></noLogin>
-		</view>
+
 	</view>
 </template>
 
@@ -82,8 +83,9 @@
 					"48小时快速退款",
 					"满88包邮",
 				],
-				shopList: [],
+				shopList: null,
 				checkTotal: false,
+				loginMsg: null,
 
 			}
 		},
@@ -96,6 +98,8 @@
 							item.isChecked = false
 						})
 						this.shopList = res.data.data
+					}else {
+						this.shopList =[]
 					}
 				}).catch(err => {
 					console.log(err)
@@ -173,26 +177,36 @@
 
 		},
 		onShow() {
-			this.getCartList()
+			if (this.$store.state.userInfo) {
+				this.loginMsg = this.$store.state.userInfo
+				this.checkTotal = false
+				this.getCartList()
+			} else {
+				this.shopList = []
+			}
 		},
 		filters: {
 
 		},
 		computed: {
 			total() {
-				this.$store.state.shoppingNumber = this.shopList.reduce((pre, item) => {
-					return pre + item.number
-				}, 0)
-				let a = this.shopList.filter(item => item.isChecked).reduce((pre, item) => {
-					return pre + item.number
-				}, 0)
-				return a
+				if (this.shopList) {
+					this.$store.state.shoppingNumber = this.shopList.reduce((pre, item) => {
+						return pre + item.number
+					}, 0)
+					let a = this.shopList.filter(item => item.isChecked).reduce((pre, item) => {
+						return pre + item.number
+					}, 0)
+					return a
+				}
 			},
 			totalPrice() {
-				let a = this.shopList.filter(item => item.isChecked).reduce((pre, item) => {
-					return pre + item.number * item.retail_price
-				}, 0)
-				return a
+				if (this.shopList) {
+					let a = this.shopList.filter(item => item.isChecked).reduce((pre, item) => {
+						return pre + item.number * item.retail_price
+					}, 0)
+					return a
+				}
 			}
 		},
 		watch: {},
@@ -332,6 +346,7 @@
 				.right {
 					image {
 						width: 50rpx;
+						height: 50rpx;
 					}
 				}
 			}
