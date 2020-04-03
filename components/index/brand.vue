@@ -69,7 +69,7 @@
 		overflow: hidden;
 		position: relative;
 
-		.img {
+		image {
 			width: 100%;
 		}
 

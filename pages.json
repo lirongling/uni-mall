@@ -148,6 +148,7 @@
 		"selectedColor": "#BE351C",
 		"backgroundColor": "#FAFAFA",
 		"borderStyle": "white",
+		// "height":"100rpx",
 		"list": [{
 				"pagePath": "pages/index/index",
 				"iconPath": "static/images/home.png",

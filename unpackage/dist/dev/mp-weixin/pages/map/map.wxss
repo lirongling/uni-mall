@@ -83,14 +83,11 @@
         margin-bottom: 10rpx;
         color: #000000;
 }
-.container .content.data-v-6f0e0b80 {
+.container map.data-v-6f0e0b80 {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
             flex: 1;
-    position: relative;
-}
-.container .content map.data-v-6f0e0b80 {
-      width: 100%;
-      height: calc(100vh - 44px);
+    width: 100vh;
+    height: 100vh;
 }
 

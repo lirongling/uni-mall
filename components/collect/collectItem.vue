@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="content">
-			<view class="content-item flex a-center j-between" v-for="(item,index) in dataList" :key="index">
+			<view class="content-item flex a-center j-between" v-for="(item,index) in dataList" :key="index" @click="details(item.id)">
 				<view class="left flex a-center">
 					<image lazy-load="true" style="height: auto;" :src="item.list_pic_url" mode="widthFix"></image>
 					<view class="info">
@@ -74,7 +74,7 @@
 								}
 								_this.addcollect(a, index)
 							} else {
-								_this.delHistory( index)
+								_this.delHistory(index)
 							}
 						} else if (res.cancel) {
 
@@ -98,7 +98,7 @@
 					this.historyShops = uni.getStorageSync("historyShops")
 				}
 				this.historyShops[this.historyIdx].goods.splice(index, 1)
-				uni.setStorageSync("historyShops",this.historyShops)
+				uni.setStorageSync("historyShops", this.historyShops)
 				this.toast(index)
 			},
 			toast(index) {
@@ -138,6 +138,12 @@
 					return parseInt(minu) + "分钟前";
 				}
 			},
+			// 去详情页
+			details(id) {
+				uni.navigateTo({
+					url: `/pages/details/details?id=${id}`
+				});
+			}
 		},
 		mounted() {
 			this.getData()

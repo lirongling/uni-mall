@@ -58,6 +58,7 @@
 	}
 	.swiper{
 		width: 100vw;
+		min-height: 53.3vw;
 	}
 	.image-item {
 		width: 100%;

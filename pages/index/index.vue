@@ -13,7 +13,7 @@
 				<uni-search-bar :initialVal="initialVal" :radius="100"></uni-search-bar>
 			</view>
 		</view>
-		<load></load>
+		<!-- <load></load> -->
 		<view class="content" v-if="homeData.banner">
 			<wheel :bannerList="homeData.banner"></wheel>
 			<channel :channelList="homeData.channel"></channel>

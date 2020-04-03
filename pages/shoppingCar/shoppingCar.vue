@@ -10,16 +10,16 @@
 			<noLogin :loginMsg="loginMsg" :shopList="shopList"></noLogin>
 		</view>
 		<view class="content" v-else>
-			<view class="content-item flex a-center j-between" v-for="(item,index) in shopList" :key="index">
+			<view class="content-item flex a-center j-between" v-for="(item,index) in shopList" :key="index" >
 				<view class="left flex a-center">
-					<view class="check" @click="changeRadio(item)">
+					<view class="check" @click.stop="changeRadio(item)">
 						<radio color="#ff6034" :value="getValue(index)" :checked="item.isChecked" />
 					</view>
-					<view class="img">
+					<view class="img" @click="details(item.goods_id)">
 						<image :src="item.list_pic_url" mode="widthFix"></image>
 					</view>
 					<view class="details ">
-						<view class="name">
+						<view class="name" @click="details(item.goods_id)">
 							{{item.goods_name}}
 						</view>
 						<view class="details-bottom flex a-center">
@@ -36,7 +36,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="right" v-if="item.isChecked" @click="delShop(item.id,index)">
+				<view class="right" v-if="item.isChecked" @click.stop="delShop(item.id,index)">
 					<image lazy-load="true" style="height: auto;" src="../../static/images/close.png" mode="widthFix"></image>
 				</view>
 			</view>
@@ -98,8 +98,8 @@
 							item.isChecked = false
 						})
 						this.shopList = res.data.data
-					}else {
-						this.shopList =[]
+					} else {
+						this.shopList = []
 					}
 				}).catch(err => {
 					console.log(err)
@@ -171,6 +171,12 @@
 				uni.navigateTo({
 					url: "/pages/order/order"
 				})
+			},
+			// 去详情页
+			details(id) {
+				uni.navigateTo({
+					url: `/pages/details/details?id=${id}`
+				});
 			}
 		},
 		mounted() {

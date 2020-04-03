@@ -11,7 +11,10 @@
 				{{currentNav.front_desc}}
 			</view>
 		</view>
-		<view class="content" v-if="currentList.length>0">
+		<view class="no-content" v-if="!currentList">
+			加载中~~~
+		</view>
+		<view class="content" v-else-if="currentList.length>0">
 			<good :goodList="currentList"></good>
 		</view>
 		<view class="no-content" v-else>
@@ -34,7 +37,7 @@
 			return {
 				navData: [],
 				currentNav:{},
-				currentList:[],
+				currentList:null,
 				tabIdx:0
 			}
 		},
@@ -97,7 +100,10 @@
 	.nav{
 		background-color: white;
 		position: fixed;
+		top:0;
+		/* #ifdef H5 */
 		top: 88rpx;
+		/* #endif */
 		left: 0;
 		width: 100%;
 		z-index: 9;

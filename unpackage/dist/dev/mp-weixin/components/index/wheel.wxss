@@ -29,6 +29,7 @@
 }
 .swiper.data-v-1603a9f3 {
   width: 100vw;
+  min-height: 53.3vw;
 }
 .image-item.data-v-1603a9f3 {
   width: 100%;

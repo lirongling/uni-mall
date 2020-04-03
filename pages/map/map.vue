@@ -25,12 +25,12 @@
 				</view>
 			</view>
 		</view>
-		<view class="content" v-show="isShow">
 
-			<map :latitude="latitude" :longitude="longitude" :markers="covers">
+
+			<map v-show="isShow" :latitude="latitude" :longitude="longitude" :markers="covers">
 
 			</map>
-		</view>
+	
 	</view>
 </template>
 
@@ -174,6 +174,7 @@
 		width: 100%;
 		/* #ifdef APP-PLUS */
 		height: 100vh;
+
 		/* #endif */
 		// margin-top: 44px;
 		/* */
@@ -236,23 +237,21 @@
 			}
 		}
 
-		.content {
-			flex: 1;
-			position: relative;
-
-
 
 			map {
-				width: 100%;
+				flex: 1;
+				width: 100vh;
+				/* #ifdef H5 */
 				height: calc(100vh - 44px);
+				/* #endif */
 				/* #ifdef APP-PLUS */
 				height: 100%;
 				/* #endif */
-				// #ifdef APP-PLUS
-				// margin-top: 100rpx;
-				// #endif
+				/* #ifdef MP-WEIXIN */
+				height: 100vh;
+				/* #endif */
 
 			}
-		}
+		
 	}
 </style>

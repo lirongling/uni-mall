@@ -98,6 +98,8 @@
 			return {
 				address: {},
 				addressList: [],
+				number: null,
+				total:null
 
 			}
 		},
@@ -122,7 +124,7 @@
 						this.$store.state.addressList = res.data.data
 						this.addressList = res.data.data
 						this.address = res.data.data[0]
-						if(this.address){
+						if (this.address) {
 							this.address.address = this.address.address.replace(/\s*/g, "")
 						}
 					}
@@ -139,20 +141,29 @@
 						openId: item.user_id,
 						goodsId: item.goods_id
 					}
+					console.log(item)
 					this.$api.submitOrder(a).then(res => {
+						console.log(res)
 						if (res.status === 200 && res.data.data) {
-							uni.showToast({
-								title: "购买成功,共计元",
-								icon:"none"
-							})
-							this.$api.deleteAction(item.id).then(res => {
-								if (res.status === 200 && res.data.data) {
-									console.log(res)
-								}
-							}).catch(err => {
-								console.log(err)
-							})
+							if (item.id) {
+								this.$api.deleteAction(item.id).then(res => {
+									if (res.status === 200 && res.data.data) {
+										console.log(res)
+									}
+								}).catch(err => {
+									console.log(err)
+								})
+							}
 
+							uni.showToast({
+								title: `购买成功,共计${this.total}元`,
+								icon: "none"
+							})
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								})
+							}, 1000)
 						}
 					}).catch(err => {
 						console.log(err)
@@ -164,7 +175,12 @@
 
 		},
 		onLoad() {
-
+			this.number = this.$store.state.orderList.reduce((pre, item) => {
+				return pre + item.number
+			}, 0)
+			this.total = this.$store.state.orderList.reduce((pre, item) => {
+				return pre + item.number * item.retail_price
+			}, 0)
 		},
 		onShow() {
 			console.log(this.$store.state.orderList)
@@ -183,19 +199,6 @@
 			orderList() {
 				return this.$store.state.orderList
 			},
-			number() {
-				let a = this.$store.state.orderList.reduce((pre, item) => {
-					return pre + item.number
-				}, 0)
-				return a
-			},
-			total() {
-				let a = this.$store.state.orderList.filter(item => item.isChecked).reduce((pre, item) => {
-					return pre + item.number * item.retail_price
-				}, 0)
-				return a
-			},
-
 		},
 		watch: {
 

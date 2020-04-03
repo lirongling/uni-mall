@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _load_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./load.vue?vue&type=script&lang=js& */ 244);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _load_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _load_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _load_vue_vue_type_style_index_0_id_05dc02fe_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./load.vue?vue&type=style&index=0&id=05dc02fe&scoped=true&lang=scss& */ 246);
-/* harmony import */ var _HBuilderX_2_6_5_20200314_full_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../软考/HBuilderX.2.6.5.20200314.full/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 14);
+/* harmony import */ var _HBuilderX_2_6_5_20200314_full_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../软考/HBuilderX.2.6.5.20200314.full/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 15);
 
 var renderjs
 
@@ -120,7 +120,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _qqmapWxJssdk = _interopRequireDefault(__webpack_require__(/*! ../../static/js/qqmap-wx-jssdk.js */ 61));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+var _qqmapWxJssdk = _interopRequireDefault(__webpack_require__(/*! ../../static/js/qqmap-wx-jssdk.js */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 var _default = { name: "", components: {},
@@ -189,14 +189,14 @@ var _default = { name: "", components: {},
               if (res.confirm) {
                 //打开授权设置
                 console.log('sure');
-                _this.callbackLocation();
+                _this.openSetting();
               } else if (res.cancel) {
                 uni.showToast({
                   title: "未打开位置授权，某些功能将无法使用",
                   icon: "none" });
 
                 setTimeout(function () {
-                  // _this.callbackLocation()
+                  _this.callbackLocation();
                 }, 3000);
               }
             } });

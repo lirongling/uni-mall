@@ -184,7 +184,7 @@
 			//#endif
 			//#ifdef APP-PLUS
 			otherLogin(e) {
-				var self = this;
+				var _this = this;
 				this.$refs.popup.close()
 				uni.login({
 					provider: e,
@@ -217,39 +217,46 @@
 			//#endif
 			// 跳转
 			jump(index) {
-				if (index === 3) {
-					uni.navigateTo({
-						url: "/pages/collect/collect"
-					})
-				} else if (index === 4) {
-					uni.navigateTo({
-						url: "/pages/lookHistory/lookHistory"
-					})
-				} else if (index === 6) {
-					uni.navigateTo({
-						url: "/pages/addressList/addressList"
-					})
-				} else if (index === 10) {
-					uni.navigateTo({
-						url: "/pages/service/service"
-					})
-				}else if(index === 11){
-					if(this.$store.state.userInfo){
-						this.$store.state.userInfo = null
-						this.$store.state.openId = null
-						uni.removeStorageSync("openId")
-						uni.removeStorageSync("userInfo")
-						uni.showToast({
-							title:"退出成功",
-							icon:"none"
+				if (this.$store.state.userInfo) {
+					if (index === 3) {
+						uni.navigateTo({
+							url: "/pages/collect/collect"
 						})
+					} else if (index === 4) {
+						uni.navigateTo({
+							url: "/pages/lookHistory/lookHistory"
+						})
+					} else if (index === 6) {
+						uni.navigateTo({
+							url: "/pages/addressList/addressList"
+						})
+					} else if (index === 10) {
+						uni.navigateTo({
+							url: "/pages/service/service"
+						})
+					} else if (index === 11) {
+						if (this.$store.state.userInfo) {
+							this.$store.state.userInfo = null
+							this.$store.state.openId = null
+							uni.removeStorageSync("openId")
+							uni.removeStorageSync("userInfo")
+							uni.showToast({
+								title: "退出成功",
+								icon: "none"
+							})
+						} 
+
 					}else{
 						uni.showToast({
-							title:"暂未登录，请登录",
-							icon:"none"
+							title: "抱歉，此功能暂未开发",
+							icon: "none"
 						})
 					}
-					
+				}else{
+					uni.showToast({
+						title: "暂未登录，请登录",
+						icon: "none"
+					})
 				}
 			}
 		},

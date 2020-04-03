@@ -71,14 +71,14 @@
 								if (res.confirm) {
 									//打开授权设置
 									console.log('sure')
-									_this.callbackLocation()
+									_this.openSetting()
 								} else if (res.cancel) {
 									uni.showToast({
 										title: "未打开位置授权，某些功能将无法使用",
 										icon: "none"
 									})
 									setTimeout(() => {
-										// _this.callbackLocation()
+										_this.callbackLocation()
 									}, 3000)
 								}
 							}

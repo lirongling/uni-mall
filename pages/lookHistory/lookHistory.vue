@@ -43,7 +43,10 @@
 					if(index!==-1){
 						this.collection = historyShops[index].goods
 					}
+				}else{
+					this.collection =[]
 				}
+				
 			}
 		},
 		mounted() {

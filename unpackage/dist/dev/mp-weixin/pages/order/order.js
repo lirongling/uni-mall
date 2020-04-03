@@ -30,7 +30,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./order.vue?vue&type=script&lang=js& */ 148);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _order_vue_vue_type_style_index_0_id_1ab2b7e4_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./order.vue?vue&type=style&index=0&id=1ab2b7e4&scoped=true&lang=scss& */ 150);
-/* harmony import */ var _HBuilderX_2_6_5_20200314_full_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../软考/HBuilderX.2.6.5.20200314.full/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 14);
+/* harmony import */ var _HBuilderX_2_6_5_20200314_full_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../软考/HBuilderX.2.6.5.20200314.full/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 15);
 
 var renderjs
 
@@ -232,7 +232,9 @@ var _default =
   data: function data() {
     return {
       address: {},
-      addressList: [] };
+      addressList: [],
+      number: null,
+      total: null };
 
 
   },
@@ -274,20 +276,29 @@ var _default =
           openId: item.user_id,
           goodsId: item.goods_id };
 
+        console.log(item);
         _this2.$api.submitOrder(a).then(function (res) {
+          console.log(res);
           if (res.status === 200 && res.data.data) {
+            if (item.id) {
+              _this2.$api.deleteAction(item.id).then(function (res) {
+                if (res.status === 200 && res.data.data) {
+                  console.log(res);
+                }
+              }).catch(function (err) {
+                console.log(err);
+              });
+            }
+
             uni.showToast({
-              title: "购买成功,共计元",
+              title: "\u8D2D\u4E70\u6210\u529F,\u5171\u8BA1".concat(_this2.total, "\u5143"),
               icon: "none" });
 
-            _this2.$api.deleteAction(item.id).then(function (res) {
-              if (res.status === 200 && res.data.data) {
-                console.log(res);
-              }
-            }).catch(function (err) {
-              console.log(err);
-            });
+            setTimeout(function () {
+              uni.navigateBack({
+                delta: 1 });
 
+            }, 1000);
           }
         }).catch(function (err) {
           console.log(err);
@@ -299,7 +310,12 @@ var _default =
 
   },
   onLoad: function onLoad() {
-
+    this.number = this.$store.state.orderList.reduce(function (pre, item) {
+      return pre + item.number;
+    }, 0);
+    this.total = this.$store.state.orderList.reduce(function (pre, item) {
+      return pre + item.number * item.retail_price;
+    }, 0);
   },
   onShow: function onShow() {
     console.log(this.$store.state.orderList);
@@ -317,20 +333,7 @@ var _default =
   computed: {
     orderList: function orderList() {
       return this.$store.state.orderList;
-    },
-    number: function number() {
-      var a = this.$store.state.orderList.reduce(function (pre, item) {
-        return pre + item.number;
-      }, 0);
-      return a;
-    },
-    total: function total() {
-      var a = this.$store.state.orderList.filter(function (item) {return item.isChecked;}).reduce(function (pre, item) {
-        return pre + item.number * item.retail_price;
-      }, 0);
-      return a;
     } },
-
 
   watch: {},
 

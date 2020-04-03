@@ -243,38 +243,45 @@ __webpack_require__.r(__webpack_exports__);
 
     // 跳转
     jump: function jump(index) {
-      if (index === 3) {
-        uni.navigateTo({
-          url: "/pages/collect/collect" });
+      if (this.$store.state.userInfo) {
+        if (index === 3) {
+          uni.navigateTo({
+            url: "/pages/collect/collect" });
 
-      } else if (index === 4) {
-        uni.navigateTo({
-          url: "/pages/lookHistory/lookHistory" });
+        } else if (index === 4) {
+          uni.navigateTo({
+            url: "/pages/lookHistory/lookHistory" });
 
-      } else if (index === 6) {
-        uni.navigateTo({
-          url: "/pages/addressList/addressList" });
+        } else if (index === 6) {
+          uni.navigateTo({
+            url: "/pages/addressList/addressList" });
 
-      } else if (index === 10) {
-        uni.navigateTo({
-          url: "/pages/service/service" });
+        } else if (index === 10) {
+          uni.navigateTo({
+            url: "/pages/service/service" });
 
-      } else if (index === 11) {
-        if (this.$store.state.userInfo) {
-          this.$store.state.userInfo = null;
-          this.$store.state.openId = null;
-          uni.removeStorageSync("openId");
-          uni.removeStorageSync("userInfo");
-          uni.showToast({
-            title: "退出成功",
-            icon: "none" });
+        } else if (index === 11) {
+          if (this.$store.state.userInfo) {
+            this.$store.state.userInfo = null;
+            this.$store.state.openId = null;
+            uni.removeStorageSync("openId");
+            uni.removeStorageSync("userInfo");
+            uni.showToast({
+              title: "退出成功",
+              icon: "none" });
+
+          }
 
         } else {
           uni.showToast({
-            title: "暂未登录，请登录",
+            title: "抱歉，此功能暂未开发",
             icon: "none" });
 
         }
+      } else {
+        uni.showToast({
+          title: "暂未登录，请登录",
+          icon: "none" });
 
       }
     } } };exports.default = _default;
@@ -339,7 +346,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _my_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./my.vue?vue&type=script&lang=js& */ 100);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _my_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _my_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _my_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./my.vue?vue&type=style&index=0&lang=scss& */ 102);
-/* harmony import */ var _HBuilderX_2_6_5_20200314_full_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../软考/HBuilderX.2.6.5.20200314.full/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 14);
+/* harmony import */ var _HBuilderX_2_6_5_20200314_full_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../软考/HBuilderX.2.6.5.20200314.full/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 15);
 
 var renderjs
 

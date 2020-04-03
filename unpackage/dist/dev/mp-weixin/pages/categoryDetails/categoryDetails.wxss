@@ -32,7 +32,7 @@
 .container .nav.data-v-36fd3460 {
     background-color: white;
     position: fixed;
-    top: 88rpx;
+    top: 0;
     left: 0;
     width: 100%;
     z-index: 9;
